@@ -57,7 +57,7 @@ UPDATE inventory
 SET description = REPLACE(description, 'small interiors', 'a huge interior')
 WHERE make = 'GM' AND model = 'Hummer';
 
--- 
+
 SELECT i.make, i.model, c.classification_name
 FROM inventory i
 INNER JOIN classification c ON i.classification_id = c.classification_id
