@@ -29,11 +29,11 @@ CREATE TABLE account (
     account_type VARCHAR(20) DEFAULT 'User'
 );
 
--- 
+
 INSERT INTO account (first_name, last_name, email, password) 
 VALUES ('Tony', 'Stark', 'tony@starkent.com', 'Iam1ronM@n');
 
---
+
 UPDATE account
 SET account_type = 'Admin'
 WHERE first_name = 'Tony' AND last_name = 'Stark';
