@@ -5,7 +5,31 @@ const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const utilities = require("./utilities/")
-const inventoryRoute = require("./routes/inventoryRoute")  // Move this up with other requires
+const inventoryRoute = require("./routes/inventoryRoute")
+const accountRoute = require("./routes/accountRoute")
+const session = require("express-session")
+const pool = require('./database/')
+const cookieParser = require("cookie-parser")
+
+/* ***********************
+ * Middleware
+ *************************/
+app.use(session({
+  store: new (require('connect-pg-simple')(session))({
+    createTableIfMissing: true,
+    pool,
+  }),
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  name: 'sessionId'
+}))
+
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
+
+// Message Middleware
+app.use(utilities.message)
 
 /* ***********************
  * View Engine and Templates
@@ -14,9 +38,6 @@ app.set("view engine", "ejs")
 app.use(expressLayouts)
 app.set("layout", "./layouts/layout")
 
-/* ***********************
- * Middleware
- * ************************/
 app.use(express.static("public"))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -25,31 +46,24 @@ app.use(express.urlencoded({ extended: true }))
  * Routes
  *************************/
 app.use(static)
-app.use("/inv", inventoryRoute)  // Now inventoryRoute is defined before use
+app.use("/inv", inventoryRoute)
+app.use("/account", accountRoute)
 
-// Index route
-app.get("/", baseController.buildHome)
+app.get("/", utilities.handleErrors(baseController.buildHome))
 
-// Trigger intentional 500 error
-app.get("/trigger-error", (req, res, next) => {
-  throw new Error("Intentional 500 error");
-})
-
-/* ***********************
- * Error Routes
- *************************/
-app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
-})
-
+// Error handling middleware
 app.use(async (err, req, res, next) => {
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  if(err.status == 404){ 
+  
+  if(err.status === 404){ 
+    res.status(404)
     message = err.message
   } else {
-    message = 'Oh no! There was a crash. Maybe try a different route?'
+    res.status(err.status || 500)
+    message = err.message || 'Oh no! There was a crash. Maybe try a different route?'
   }
+  
   res.render("errors/error", {
     title: err.status || 'Server Error',
     message,
@@ -59,14 +73,10 @@ app.use(async (err, req, res, next) => {
 
 /* ***********************
  * Local Server Information
- * Values from .env (environment) file
  *************************/
 const port = process.env.PORT
 const host = process.env.HOST
 
-/* ***********************
- * Log statement to confirm server operation
- *************************/
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
 })
