@@ -3,7 +3,6 @@ const utilities = require("../utilities/")
 
 const invCont = {}
 
-// Corrected function definitions
 invCont.buildByClassification = async function (req, res, next) {
   const classificationId = req.params.classificationId
   const data = await invModel.getInventoryByClassificationId(classificationId)
@@ -77,6 +76,17 @@ invCont.addClassification = async function(req, res, next) {
     res.redirect('/inv/add-classification')
   }
 } // Removed the trailing comma here
+
+invCont.buildAddInventory = async function(req, res, next) {
+  let nav = await utilities.getNav()
+  const classifications = await invModel.getClassifications()
+  res.render("./inventory/add-inventory", {
+    title: "Add New Vehicle",
+    nav,
+    classifications,
+    messages: req.flash()
+  })
+}
 
 invCont.addInventory = async function(req, res, next) {
   try {

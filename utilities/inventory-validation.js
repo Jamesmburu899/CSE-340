@@ -1,53 +1,48 @@
-const { body, validationResult } = require('express-validator')
+const { body, validationResult } = require("express-validator")
+const utilities = require(".")
 
 const validate = {}
 
-/* ************************
- * Classification Validation Rules
- ************************** */
 validate.classificationRules = () => {
   return [
-    body('classification_name')
+    body("classification_name")
       .trim()
       .isLength({ min: 1 })
-      .withMessage('Please provide a classification name.')
+      .withMessage("Please provide a classification name.")
       .isAlpha()
-      .withMessage('Classification name must contain only letters.')
+      .withMessage("Classification name must contain only letters.")
       .isLength({ max: 30 })
-      .withMessage('Classification name must be less than 30 characters.')
+      .withMessage("Classification name must be less than 30 characters."),
   ]
 }
 
-/* ************************
- * Inventory Validation Rules
- ************************** */
 validate.inventoryRules = () => {
   return [
-    body('inv_make')
+    body("inv_make")
       .trim()
       .isLength({ min: 1 })
-      .withMessage('Please provide a make.'),
-    body('inv_model')
+      .withMessage("Please provide a make."),
+    body("inv_model")
       .trim()
       .isLength({ min: 1 })
-      .withMessage('Please provide a model.'),
-    body('inv_year')
+      .withMessage("Please provide a model."),
+    body("inv_year")
       .isInt({ min: 1900, max: new Date().getFullYear() + 1 })
-      .withMessage('Please provide a valid year.'),
-    body('inv_description')
+      .withMessage("Please provide a valid year."),
+    body("inv_description")
       .trim()
       .isLength({ min: 1 })
-      .withMessage('Please provide a description.'),
-    body('inv_price')
+      .withMessage("Please provide a description."),
+    body("inv_price")
       .isDecimal()
-      .withMessage('Please provide a valid price.'),
-    body('inv_miles')
+      .withMessage("Please provide a valid price."),
+    body("inv_miles")
       .isInt({ min: 0 })
-      .withMessage('Please provide valid mileage.'),
-    body('inv_color')
+      .withMessage("Please provide valid mileage."),
+    body("inv_color")
       .trim()
       .isLength({ min: 1 })
-      .withMessage('Please provide a color.')
+      .withMessage("Please provide a color.")
   ]
 }
 
@@ -63,18 +58,24 @@ validate.inventoryUpdateRules = () => {
 /* ************************
  * Check Validation Results
  ************************** */
-validate.checkValidation = (req, res, next) => {
+validate.checkValidation = async (req, res, next) => {
   const errors = validationResult(req)
   if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    const { classification_name } = req.body
     let messages = errors.array().map(error => ({
       type: 'error',
       text: error.msg
     }))
-    req.flash('messages', messages)
-    return res.render(`inventory/${req.originalUrl.split('/')[2]}`, {
+    req.flash("messages", messages)
+    res.status(400).render("inventory/add-classification", {
+      errors,
       messages: req.flash(),
-      ...req.body
+      title: "Add Classification",
+      nav,
+      classification_name
     })
+    return
   }
   next()
 }

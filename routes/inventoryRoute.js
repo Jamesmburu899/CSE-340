@@ -7,9 +7,19 @@ const validate = require("../utilities/inventory-validation")
 // Management routes
 router.get("/", invController.buildManagement)
 router.get("/add-classification", invController.buildAddClassification)
-router.post("/add-classification", validate.classificationRules(), validate.checkValidation, invController.addClassification)
+router.post(
+  "/add-classification",
+  validate.classificationRules(),
+  validate.checkValidation,
+  invController.addClassification
+)
 router.get("/add-inventory", invController.buildAddInventory)
-router.post("/add-inventory", validate.inventoryRules(), validate.checkValidation, invController.addInventory)
+router.post(
+  "/add-inventory",
+  validate.inventoryRules(),
+  validate.checkValidation,
+  invController.addInventory
+)
 
 // Route for classification view
 router.get("/type/:classificationId", invController.buildByClassification)
