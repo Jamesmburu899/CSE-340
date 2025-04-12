@@ -90,6 +90,65 @@ invModel.addInventory = async function(inventoryData) {
   }
 }
 
+invModel.updateClassification = async function(classification_id, classification_name) {
+  try {
+    const sql = "UPDATE classification SET classification_name = $1 WHERE classification_id = $2 RETURNING *"
+    return await pool.query(sql, [classification_name, classification_id])
+  } catch (error) {
+    console.error("Update classification error:", error)
+    throw error
+  }
+}
+
+invModel.deleteClassification = async function(classification_id) {
+  try {
+    const sql = "DELETE FROM classification WHERE classification_id = $1 RETURNING *"
+    return await pool.query(sql, [classification_id])
+  } catch (error) {
+    console.error("Delete classification error:", error)
+    throw error
+  }
+}
+
+invModel.updateInventory = async function(inventoryData) {
+  try {
+    const sql = `UPDATE inventory SET
+      inv_make = $1, inv_model = $2, inv_year = $3, inv_description = $4,
+      inv_image = $5, inv_thumbnail = $6, inv_price = $7, inv_miles = $8,
+      inv_color = $9, classification_id = $10
+      WHERE inv_id = $11 RETURNING *`
+    
+    const values = [
+      inventoryData.inv_make,
+      inventoryData.inv_model,
+      inventoryData.inv_year,
+      inventoryData.inv_description,
+      inventoryData.inv_image,
+      inventoryData.inv_thumbnail,
+      inventoryData.inv_price,
+      inventoryData.inv_miles,
+      inventoryData.inv_color,
+      inventoryData.classification_id,
+      inventoryData.inv_id
+    ]
+    
+    return await pool.query(sql, values)
+  } catch (error) {
+    console.error("Update inventory error:", error)
+    throw error
+  }
+}
+
+invModel.deleteInventory = async function(inv_id) {
+  try {
+    const sql = "DELETE FROM inventory WHERE inv_id = $1 RETURNING *"
+    return await pool.query(sql, [inv_id])
+  } catch (error) {
+    console.error("Delete inventory error:", error)
+    throw error
+  }
+}
+
 module.exports = invModel
 
 module.exports = {

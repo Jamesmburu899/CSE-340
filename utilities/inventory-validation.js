@@ -51,6 +51,15 @@ validate.inventoryRules = () => {
   ]
 }
 
+validate.inventoryUpdateRules = () => {
+  return [
+    body('inv_id')
+      .isInt()
+      .withMessage('Invalid vehicle ID'),
+    // Add other validation rules same as inventoryRules
+  ]
+}
+
 /* ************************
  * Check Validation Results
  ************************** */

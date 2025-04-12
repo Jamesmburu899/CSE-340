@@ -1,0 +1,21 @@
+<%- include('../includes/head') %>
+<%- include('../includes/header') %>
+<%- include('../includes/nav') %>
+
+<main class="edit-classification">
+    <h1>Edit Classification</h1>
+    <form action="/inv/update-classification" method="POST">
+        <input type="hidden" name="classification_id" value="<%= classification.classification_id %>">
+        <div class="form-group">
+            <label for="classification_name">Classification Name:</label>
+            <input type="text" name="classification_name" id="classification_name" 
+                   value="<%= classification.classification_name %>" required
+                   pattern="[A-Za-z]{1,30}" title="Letters only, no spaces or special characters">
+        </div>
+        <button type="submit" class="button">Update Classification</button>
+        <a href="/inv" class="button secondary">Cancel</a>
+    </form>
+    <%- include('../includes/flash-messages') %>
+</main>
+
+<%- include('../includes/footer') %>
