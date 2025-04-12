@@ -12,4 +12,7 @@ router.get("/detail/:invId", invController.buildByInventoryId)
 // Route for intentional error
 router.get("/trigger-error", invController.triggerError)
 
+// Route to test database connection
+router.get("/test-db", invController.testConnection)
+
 module.exports = router

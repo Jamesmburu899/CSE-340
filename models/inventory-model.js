@@ -41,8 +41,18 @@ async function getInventoryByInventoryId(invId) {
   }
 }
 
+async function testConnection() {
+  try {
+    return await pool.query("SELECT NOW()")
+  } catch (error) {
+    console.error("Database connection test error:", error)
+    throw error
+  }
+}
+
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
   getInventoryByInventoryId,
+  testConnection
 }
