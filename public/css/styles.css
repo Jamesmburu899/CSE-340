@@ -246,6 +246,187 @@ footer a:hover {
   margin-bottom: 1rem;
 }
 
+/* Account Activity Styles */
+.account-activity {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.account-activity h2 {
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #eee;
+}
+
+/* Enhanced Account Activity Styles */
+.account-activity {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.account-activity:hover {
+  transform: translateY(-5px);
+}
+
+.activity-details {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add these new styles */
+
+.tooltip {
+    position: absolute;
+    right: 0;
+    top: -30px;
+    background: #34495e;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.session-time {
+    color: #2980b9;
+    font-weight: bold;
+}
+
+.activity-details p {
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.activity-details p:hover {
+    background: rgba(52, 73, 94, 0.1);
+    padding-left: 1rem;
+    border-radius: 4px;
+}
+
+.activity-details p:active {
+    transform: scale(0.98);
+}
+
+.activity-details p:hover {
+  background-color: #e9ecef;
+}
+
+.activity-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  margin-left: 1rem;
+}
+
+.status-active {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-inactive {
+  background-color: #dc3545;
+  color: white;
+}
+
+.activity-chart {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.activity-actions .button {
+  position: relative;
+  overflow: hidden;
+}
+
+.activity-actions .button::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  transform: translate(-50%, -50%) scale(0);
+  border-radius: 50%;
+  transition: transform 0.5s;
+}
+
+.activity-actions .button:active::after {
+  transform: translate(-50%, -50%) scale(2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .account-activity,
+  .activity-actions .button::after {
+    transition: none;
+  }
+}
+.activity-actions .button:hover {
+  background: #34495e;
+  transform: translateY(-2px);
+}
+
+@media screen and (max-width: 768px) {
+  .activity-actions {
+    flex-direction: column;
+  }
+  
+  .account-activity {
+    margin: 1rem;
+    padding: 1rem;
+  }
+}
+
+.account-forms h2 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.account-forms label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.account-forms input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.account-forms button {
+  background: #333;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.account-forms button:hover {
+  background: #444;
+}
+
+.password-requirements {
+  display: block;
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
 /* Flash Messages */
 .flash-message {
   padding: 1rem;
