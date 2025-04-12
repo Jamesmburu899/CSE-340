@@ -4,8 +4,6 @@ const bcrypt = require("bcryptjs")
 
 const accountController = {}
 
-// ... existing methods ...
-
 accountController.buildAccountManagement = async function (req, res, next) {
   let nav = await utilities.getNav()
   res.render("./account/management", {
@@ -27,46 +25,54 @@ accountController.buildAccountUpdate = async function (req, res, next) {
   })
 }
 
+/* ****************************************
+*  Process Account Update
+* *************************************** */
 accountController.updateAccount = async function (req, res, next) {
   const { account_id, account_firstname, account_lastname, account_email } = req.body
-  const accountData = await accountModel.getAccountById(account_id)
   
   try {
-    const result = await accountModel.updateAccount(
+    const updateResult = await accountModel.updateAccount(
       account_id,
       account_firstname,
       account_lastname,
       account_email
     )
-    if (result) {
+
+    if (updateResult) {
+      const accountData = await accountModel.getAccountById(account_id)
       req.flash("notice", "Account updated successfully.")
       res.redirect("/account/")
     } else {
       req.flash("notice", "Update failed.")
-      res.redirect("/account/update/" + account_id)
+      res.status(501).redirect("/account/update/" + account_id)
     }
   } catch (error) {
     req.flash("notice", "Update failed.")
-    res.redirect("/account/update/" + account_id)
+    res.status(501).redirect("/account/update/" + account_id)
   }
 }
 
+/* ****************************************
+*  Process Password Update
+* *************************************** */
 accountController.updatePassword = async function (req, res, next) {
   const { account_id, account_password } = req.body
-  
+
   try {
     const hashedPassword = await bcrypt.hashSync(account_password, 10)
-    const result = await accountModel.updatePassword(account_id, hashedPassword)
-    if (result) {
+    const updateResult = await accountModel.updatePassword(account_id, hashedPassword)
+
+    if (updateResult) {
       req.flash("notice", "Password updated successfully.")
       res.redirect("/account/")
     } else {
       req.flash("notice", "Password update failed.")
-      res.redirect("/account/update/" + account_id)
+      res.status(501).redirect("/account/update/" + account_id)
     }
   } catch (error) {
     req.flash("notice", "Password update failed.")
-    res.redirect("/account/update/" + account_id)
+    res.status(501).redirect("/account/update/" + account_id)
   }
 }
 

@@ -2,16 +2,16 @@ const express = require("express")
 const router = express.Router()
 const accountController = require("../controllers/accountController")
 const utilities = require("../utilities/")
-const regValidate = require('../utilities/account-validation')
+const regValidate = require("../utilities/account-validation")
 
-// Route to account management
+// Route to handle account management view
 router.get("/", utilities.checkLogin, accountController.buildAccountManagement)
 
 // Routes for account update
 router.get("/update/:accountId", utilities.checkLogin, accountController.buildAccountUpdate)
 router.post("/update", 
   utilities.checkLogin,
-  regValidate.updateAccountRules(),
+  regValidate.updateRules(),
   regValidate.checkUpdateData,
   accountController.updateAccount
 )
