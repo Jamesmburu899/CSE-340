@@ -60,23 +60,37 @@ const invCont = {
 
   addClassification: async function(req, res, next) {
     const { classification_name } = req.body
-    // Add validation and database insertion logic
-  }
-
-  buildAddInventory: async function(req, res, next) {
-    let nav = await utilities.getNav()
-    const classifications = await invModel.getClassifications()
-    res.render("./inventory/add-inventory", {
-      title: "Add Inventory",
-      nav,
-      messages: req.flash(),
-      classifications,
-      ...req.body
-    })
-  }
+    try {
+      await invModel.addClassification(classification_name)
+      req.flash('messages', [{
+        type: 'success',
+        text: 'Classification added successfully!'
+      }])
+      res.redirect('/inv')
+    } catch (error) {
+      req.flash('messages', [{
+        type: 'error',
+        text: 'Failed to add classification. Please try again.'
+      }])
+      res.redirect('/inv/add-classification')
+    }
+  },
 
   addInventory: async function(req, res, next) {
-    // Add validation and database insertion logic
+    try {
+      await invModel.addInventory(req.body)
+      req.flash('messages', [{
+        type: 'success',
+        text: 'Vehicle added successfully!'
+      }])
+      res.redirect('/inv')
+    } catch (error) {
+      req.flash('messages', [{
+        type: 'error',
+        text: 'Failed to add vehicle. Please try again.'
+      }])
+      res.redirect('/inv/add-inventory')
+    }
   }
 }
 
