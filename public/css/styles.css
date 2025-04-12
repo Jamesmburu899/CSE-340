@@ -14,6 +14,9 @@ body {
   padding: 1rem;
   color: white;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .siteName {
@@ -24,6 +27,20 @@ body {
 
 #tools {
   margin-left: auto;
+}
+
+#tools a {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid white;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+#tools a:hover {
+  background: white;
+  color: #2c3e50;
 }
 
 /* Navigation */
