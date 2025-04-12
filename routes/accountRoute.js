@@ -29,6 +29,9 @@ router.post("/update-password",
 router.get("/logout", utilities.handleErrors(utilities.handleLogout))
 
 // Account activity route
-router.get("/activity/:accountId", utilities.checkLogin, accountController.buildAccountActivity)
+router.get("/activity/:accountId", 
+  utilities.handleErrors(utilities.checkLogin), 
+  utilities.handleErrors(accountController.buildAccountActivity)
+)
 
 module.exports = router
