@@ -80,3 +80,13 @@ const host = process.env.HOST
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
 })
+
+// Add this route temporarily to test DB connection
+app.get("/test-db", async (req, res) => {
+  try {
+    const result = await pool.query('SELECT NOW()')
+    res.send(`DB Connected. Server time: ${result.rows[0].now}`)
+  } catch (error) {
+    res.send(`DB Connection failed: ${error.message}`)
+  }
+})
