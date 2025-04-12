@@ -188,11 +188,12 @@ footer a:hover {
   }
 }
 
+/* Grid Display Enhancements */
 .inv-display {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
-  padding: 0;
+  padding: 2rem;
   list-style: none;
 }
 
@@ -200,8 +201,8 @@ footer a:hover {
   background: white;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
 }
 
 .inv-display li:hover {
@@ -216,22 +217,17 @@ footer a:hover {
 
 .namePrice {
   padding: 1rem;
+  text-align: center;
 }
 
 .namePrice h2 {
-  margin: 0;
-  font-size: 1.2em;
-}
-
-.namePrice a {
+  margin: 0.5rem 0;
   color: #2c3e50;
-  text-decoration: none;
+  font-size: 1.2rem;
 }
 
-.namePrice span {
-  display: block;
+.price {
   color: #e74c3c;
-  font-size: 1.2em;
+  font-size: 1.25rem;
   font-weight: bold;
-  margin-top: 0.5rem;
 }
