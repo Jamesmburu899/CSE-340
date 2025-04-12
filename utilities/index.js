@@ -77,12 +77,13 @@ Util.handleLogout = (req, res, next) => {
   res.redirect("/")
 }
 
-Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
+Util.checkAccountType = (req, res, next) => {
+  const accountType = res.locals.accountData?.account_type
+  if (accountType === "Employee" || accountType === "Admin") {
     next()
   } else {
-    req.flash("notice", "Please log in.")
-    res.redirect("/account/login")
+    req.flash("notice", "Please log in with proper account type")
+    return res.redirect("/account/login")
   }
 }
 
