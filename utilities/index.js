@@ -87,4 +87,47 @@ Util.checkAccountType = (req, res, next) => {
   }
 }
 
+/* ****************************************
+* Middleware For Handling Errors
+* Wrap other function in this for 
+* General Error Handling
+**************************************** */
+Util.handleErrors = fn => (req, res, next) => 
+  Promise.resolve(fn(req, res, next)).catch(next)
+
+/* ****************************************
+* Check JWT Token
+**************************************** */
+Util.checkJWTToken = (req, res, next) => {
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          res.clearCookie("jwt")
+          return res.redirect("/account/login")
+        }
+        res.locals.accountData = accountData
+        res.locals.loggedin = 1
+        next()
+      })
+  } else {
+    next()
+  }
+}
+
+/* ****************************************
+* Message Handler
+**************************************** */
+Util.message = (req, res, next) => {
+  const messages = []
+  if (req.session.message) {
+    messages.push(req.session.message)
+    delete req.session.message
+  }
+  res.locals.messages = messages
+  next()
+}
+
 module.exports = Util
