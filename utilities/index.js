@@ -21,4 +21,51 @@ Util.getNav = async function () {
   return list
 }
 
+/* ************************
+ * Build the vehicle detail view HTML
+ ************************** */
+Util.buildVehicleDetail = async function(vehicle){
+  let price = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  }).format(vehicle.inv_price)
+
+  let miles = new Intl.NumberFormat('en-US').format(vehicle.inv_miles)
+
+  let html = `<div class="vehicle-container">
+    <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}" class="vehicle-image">
+    <div class="vehicle-info">
+      <h1>${vehicle.inv_make} ${vehicle.inv_model}</h1>
+      <p class="vehicle-price">${price}</p>
+      <dl class="vehicle-details">
+        <dt>Year:</dt>
+        <dd>${vehicle.inv_year}</dd>
+        <dt>Mileage:</dt>
+        <dd>${miles} miles</dd>
+        <dt>Color:</dt>
+        <dd>${vehicle.inv_color}</dd>
+        <dt>Description:</dt>
+        <dd>${vehicle.inv_description}</dd>
+      </dl>
+    </div>
+  </div>`
+  return html
+}
+
+Util.handleErrors = async function(err, req, res, next) {
+  let nav = await Util.getNav()
+  let title = err.status || 'Server Error'
+  let message = err.message || 'Oh no! There was a crash. Maybe try a different route?'
+  
+  if (err.status === 404) {
+    message = 'Sorry, we appear to have lost that page.'
+  }
+  
+  res.render("errors/error", {
+    title,
+    message,
+    nav
+  })
+}
+
 module.exports = Util

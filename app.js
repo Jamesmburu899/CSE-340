@@ -4,14 +4,15 @@ const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
-const utilities = require("./utilities/")  // Add this line
+const utilities = require("./utilities/")
+const inventoryRoute = require("./routes/inventoryRoute")  // Move this up with other requires
 
 /* ***********************
  * View Engine and Templates
  *************************/
 app.set("view engine", "ejs")
 app.use(expressLayouts)
-app.set("layout", "./layouts/layout") // not required if using layouts/layout.ejs
+app.set("layout", "./layouts/layout")
 
 /* ***********************
  * Middleware
@@ -24,9 +25,15 @@ app.use(express.urlencoded({ extended: true }))
  * Routes
  *************************/
 app.use(static)
+app.use("/inv", inventoryRoute)  // Now inventoryRoute is defined before use
 
 // Index route
 app.get("/", baseController.buildHome)
+
+// Trigger intentional 500 error
+app.get("/trigger-error", (req, res, next) => {
+  throw new Error("Intentional 500 error");
+})
 
 /* ***********************
  * Error Routes
