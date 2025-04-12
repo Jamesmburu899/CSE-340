@@ -4,24 +4,23 @@
 
 <main class="vehicle-detail">
     <div class="vehicle-container">
-        <div class="vehicle-image-section">
+        <div class="vehicle-image-wrapper">
             <img src="<%= vehicle.inv_image %>" alt="<%= vehicle.inv_make %> <%= vehicle.inv_model %>" class="vehicle-image">
         </div>
         <div class="vehicle-info">
-            <h1><%= vehicle.inv_make %> <%= vehicle.inv_model %></h1>
-            <p class="vehicle-price">$<%= new Intl.NumberFormat('en-US').format(vehicle.inv_price) %></p>
+            <h1><%= vehicle.inv_make %> <%= vehicle.inv_model %> <%= vehicle.inv_year %></h1>
+            <div class="vehicle-price">
+                <span>Price: <%= new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(vehicle.inv_price) %></span>
+            </div>
             <div class="vehicle-details">
                 <dl>
-                    <dt>Year</dt>
-                    <dd><%= vehicle.inv_year %></dd>
-                    
-                    <dt>Mileage</dt>
+                    <dt>Mileage:</dt>
                     <dd><%= new Intl.NumberFormat('en-US').format(vehicle.inv_miles) %> miles</dd>
                     
-                    <dt>Color</dt>
+                    <dt>Color:</dt>
                     <dd><%= vehicle.inv_color %></dd>
                     
-                    <dt>Description</dt>
+                    <dt>Description:</dt>
                     <dd><%= vehicle.inv_description %></dd>
                 </dl>
             </div>
