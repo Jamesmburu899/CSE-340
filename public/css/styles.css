@@ -1,54 +1,37 @@
-/* Base styles improvements */
+/* Global Styles */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', sans-serif;
   line-height: 1.6;
-  background-color: #f5f5f5;
+  background-color: #f8f9fa;
+  color: #333;
 }
 
-#wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  background: white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-/* Enhanced Header */
+/* Header */
 #top-header {
-  background: linear-gradient(to right, #2c3e50, #3498db);
-  padding: 1rem;
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  padding: 1.5rem;
   color: white;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .siteName {
-  font-size: 2em;
-  font-weight: bold;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
-#tools a {
-  color: white;
-  text-decoration: none;
-  padding: 0.5em 1em;
-  border: 1px solid white;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-#tools a:hover {
-  background: white;
-  color: #2c3e50;
-}
-
-/* Enhanced Navigation */
+/* Navigation */
 nav {
-  background: #34495e;
-  padding: 0;
+  background: #2c3e50;
+  padding: 0.8rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 nav ul {
   display: flex;
+  justify-content: center;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -57,30 +40,40 @@ nav ul {
 nav a {
   color: white;
   text-decoration: none;
-  padding: 1em;
-  display: block;
-  transition: background 0.3s ease;
+  padding: 0.8rem 1.5rem;
+  margin: 0 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
 nav a:hover {
-  background: #2c3e50;
+  background: rgba(255,255,255,0.1);
 }
 
-/* Vehicle Detail Enhancements */
-.vehicle-detail {
+/* Main Content */
+main {
   padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Vehicle Detail */
+.vehicle-detail {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
 .vehicle-container {
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
 }
 
 .vehicle-image {
   width: 100%;
-  height: auto;
+  height: 400px;
   object-fit: cover;
 }
 
@@ -89,75 +82,19 @@ nav a:hover {
 }
 
 .vehicle-price {
-  font-size: 2em;
-  color: #2c3e50;
+  color: #e74c3c;
+  font-size: 2rem;
+  font-weight: 700;
   margin: 1rem 0;
 }
 
-.vehicle-details {
-  display: grid;
-  gap: 1rem;
-}
-
-.vehicle-details dt {
-  color: #7f8c8d;
-  font-weight: 600;
-}
-
-/* Error Page Styling */
-.error-container {
-  text-align: center;
-  padding: 4rem 2rem;
-}
-
-.error-title {
-  font-size: 3em;
-  color: #e74c3c;
-  margin-bottom: 1rem;
-}
-
-.error-message {
-  background: #fde8e8;
-  color: #c53030;
-  padding: 1rem;
-  border-radius: 8px;
-  margin: 2rem 0;
-}
-
-.error-content {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.error-actions {
-    margin-top: 2rem;
-    text-align: center;
-}
-
-.button {
-    display: inline-block;
-    padding: 0.8rem 1.5rem;
-    background: #3498db;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background 0.3s ease;
-}
-
-.button:hover {
-    background: #2980b9;
-}
-
-/* Enhanced Footer */
+/* Footer */
 footer {
   background: #2c3e50;
   color: white;
   padding: 2rem;
   text-align: center;
+  margin-top: 2rem;
 }
 
 footer a {
@@ -170,64 +107,39 @@ footer a:hover {
   color: #2980b9;
 }
 
-/* Responsive Improvements */
+/* Responsive Design */
 @media screen and (min-width: 768px) {
   .vehicle-container {
-    display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
   }
-
+  
   .vehicle-image {
     height: 100%;
-    object-fit: cover;
-  }
-
-  .vehicle-info {
-    padding: 3rem;
   }
 }
 
-/* Grid Display Enhancements */
-.inv-display {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
-  list-style: none;
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.inv-display li {
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease-in-out;
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
 }
 
-.inv-display li:hover {
-  transform: translateY(-5px);
+/* Buttons */
+.button {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
-.inv-display img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.namePrice {
-  padding: 1rem;
-  text-align: center;
-}
-
-.namePrice h2 {
-  margin: 0.5rem 0;
-  color: #2c3e50;
-  font-size: 1.2rem;
-}
-
-.price {
-  color: #e74c3c;
-  font-size: 1.25rem;
-  font-weight: bold;
+.button:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
 }
