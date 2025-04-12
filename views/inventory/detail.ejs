@@ -3,7 +3,30 @@
 <%- include('../includes/nav') %>
 
 <main class="vehicle-detail">
-  <%- vehicleDisplay %>
+    <div class="vehicle-container">
+        <div class="vehicle-image-section">
+            <img src="<%= vehicle.inv_image %>" alt="<%= vehicle.inv_make %> <%= vehicle.inv_model %>" class="vehicle-image">
+        </div>
+        <div class="vehicle-info">
+            <h1><%= vehicle.inv_make %> <%= vehicle.inv_model %></h1>
+            <p class="vehicle-price">$<%= new Intl.NumberFormat('en-US').format(vehicle.inv_price) %></p>
+            <div class="vehicle-details">
+                <dl>
+                    <dt>Year</dt>
+                    <dd><%= vehicle.inv_year %></dd>
+                    
+                    <dt>Mileage</dt>
+                    <dd><%= new Intl.NumberFormat('en-US').format(vehicle.inv_miles) %> miles</dd>
+                    
+                    <dt>Color</dt>
+                    <dd><%= vehicle.inv_color %></dd>
+                    
+                    <dt>Description</dt>
+                    <dd><%= vehicle.inv_description %></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
 </main>
 
 <%- include('../includes/footer') %>
