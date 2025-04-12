@@ -76,7 +76,7 @@ invCont.addClassification = async function(req, res, next) {
     }])
     res.redirect('/inv/add-classification')
   }
-},
+} // Removed the trailing comma here
 
 invCont.addInventory = async function(req, res, next) {
   try {
@@ -206,7 +206,6 @@ invCont.deleteInventory = async function(req, res, next) {
     }])
     res.redirect('/inv')
   }
-}
 }
 
 module.exports = invCont
