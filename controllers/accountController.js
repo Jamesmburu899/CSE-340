@@ -76,4 +76,24 @@ accountController.updatePassword = async function (req, res, next) {
   }
 }
 
+/* ****************************************
+*  Build Account Activity View
+* *************************************** */
+accountController.buildAccountActivity = async function (req, res, next) {
+  const account_id = req.params.accountId
+  let nav = await utilities.getNav()
+  
+  try {
+    const accountData = await accountModel.getAccountById(account_id)
+    res.render("./account/activity", {
+      title: "Account Activity",
+      nav,
+      accountData,
+      errors: null,
+    })
+  } catch (error) {
+    req.flash("notice", "Error fetching account activity")
+    res.redirect("/account")
+  }
+}
 module.exports = accountController

@@ -56,4 +56,41 @@ validate.checkUpdateData = async (req, res, next) => {
   next()
 }
 
+/* ******************************
+ * Password Validation Rules
+ * ***************************** */
+validate.passwordRules = () => {
+  return [
+    body("account_password")
+      .trim()
+      .isStrongPassword({
+        minLength: 12,
+        minLowercase: 1,
+        minUppercase: 1,
+        minNumbers: 1,
+        minSymbols: 1,
+      })
+      .withMessage("Password does not meet requirements.")
+  ]
+}
+
+/* ******************************
+ * Check password and return errors or continue
+ * ***************************** */
+validate.checkPassword = async (req, res, next) => {
+  const { account_password } = req.body
+  let errors = []
+  errors = validationResult(req)
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    res.render("account/update", {
+      errors,
+      title: "Update Account",
+      nav,
+    })
+    return
+  }
+  next()
+}
+
 module.exports = validate

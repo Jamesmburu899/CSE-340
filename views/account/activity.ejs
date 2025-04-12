@@ -1,0 +1,25 @@
+<%- include('../partials/head') %>
+<%- include('../partials/header') %>
+<%- include('../partials/nav') %>
+
+<main>
+  <h1><%= title %></h1>
+  <%- messages() %>
+
+  <div class="account-activity">
+    <h2>Account Activity for <%= accountData.account_firstname %></h2>
+    
+    <div class="activity-details">
+      <p><strong>Email:</strong> <%= accountData.account_email %></p>
+      <p><strong>Last Login:</strong> <%= accountData.last_login ? new Date(accountData.last_login).toLocaleString() : 'Never' %></p>
+      <p><strong>Account Type:</strong> <%= accountData.account_type %></p>
+    </div>
+
+    <div class="activity-actions">
+      <a href="/account/update/<%= accountData.account_id %>" class="button">Update Account</a>
+      <a href="/account" class="button">Back to Account Management</a>
+    </div>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

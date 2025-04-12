@@ -43,4 +43,17 @@ accountModel.updatePassword = async function (account_id, account_password) {
   }
 }
 
+/* *****************************
+* Check for existing email
+* ***************************** */
+accountModel.checkExistingEmail = async function (account_email) {
+  try {
+    const sql = "SELECT * FROM account WHERE account_email = $1"
+    const email = await pool.query(sql, [account_email])
+    return email.rows[0]
+  } catch (error) {
+    return new Error("Error checking email")
+  }
+}
+
 module.exports = accountModel
