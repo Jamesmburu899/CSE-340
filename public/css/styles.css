@@ -159,3 +159,51 @@ footer a:hover {
     padding: 3rem;
   }
 }
+
+.inv-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.inv-display li {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.inv-display li:hover {
+  transform: translateY(-5px);
+}
+
+.inv-display img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.namePrice {
+  padding: 1rem;
+}
+
+.namePrice h2 {
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.namePrice a {
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+.namePrice span {
+  display: block;
+  color: #e74c3c;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
