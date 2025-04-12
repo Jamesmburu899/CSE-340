@@ -11,19 +11,15 @@ body {
 /* Header */
 #top-header {
   background: linear-gradient(135deg, #2c3e50, #34495e);
-  padding: 1.5rem;
+  padding: 1rem;
   color: white;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .siteName {
   font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: 1px;
-  margin-right: auto;
 }
 
 #tools {
@@ -31,13 +27,18 @@ body {
 }
 
 /* Navigation */
+nav {
+  background: #2c3e50;
+  padding: 0.8rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
 nav ul {
   display: flex;
   justify-content: space-around;
   margin: 0;
   padding: 0;
   list-style: none;
-  width: 100%;
 }
 
 nav a {
