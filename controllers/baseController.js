@@ -5,9 +5,11 @@ const baseController = {}
 
 baseController.buildHome = async function(req, res){
   const nav = await utilities.getNav()
+  const homeContent = await utilities.buildHomePage()
   res.render("index", {
     title: "Home",
-    nav
+    nav,
+    homeContent
   })
 }
 

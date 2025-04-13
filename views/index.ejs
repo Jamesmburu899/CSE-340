@@ -3,7 +3,13 @@
 <%- include('./includes/nav') %>
 
 <main>
-    <h1>Welcome to CSE Motors!</h1>
+    <% if (title) { %>
+      <h1><%= title %></h1>
+    <% } else { %>
+      <h1>Welcome to CSE Motors</h1>
+    <% } %>
+
+    <%- homeContent %>
     
     <div class="car-details">
       <h2>DMC Delorean</h2>
