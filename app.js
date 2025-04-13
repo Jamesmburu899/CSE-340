@@ -8,17 +8,18 @@ const utilities = require("./utilities/")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
 const session = require("express-session")
-const pool = require('./database/')
+// Modify this line to directly use pg
+const { Pool } = require('pg')
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL
+})
 const cookieParser = require("cookie-parser")
 
 /* ***********************
  * Middleware
  *************************/
+// Use memory store instead of pg store temporarily to avoid the error
 app.use(session({
-  store: new (require('connect-pg-simple')(session))({
-    createTableIfMissing: true,
-    pool,
-  }),
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
@@ -51,6 +52,9 @@ app.use("/account", accountRoute)
 
 app.get("/", utilities.handleErrors(baseController.buildHome))
 
+// Add this route with your other routes
+app.get("/custom", utilities.handleErrors(baseController.buildCustomPage))
+
 // Database connection test route
 app.get("/test-db", async (req, res) => {
   try {
@@ -63,9 +67,15 @@ app.get("/test-db", async (req, res) => {
 
 // Error handling middleware
 app.use(async (err, req, res, next) => {
+  // Check if headers have already been sent
+  if (res.headersSent) {
+    return next(err)
+  }
+  
   let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
   
+  let message;
   if(err.status === 404){ 
     res.status(404)
     message = err.message

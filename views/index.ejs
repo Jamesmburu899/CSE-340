@@ -9,7 +9,9 @@
       <h1>Welcome to CSE Motors</h1>
     <% } %>
 
-    <%- homeContent %>
+    <% if (locals.homeContent) { %>
+      <%- homeContent %>
+    <% } %>
     
     <div class="car-details">
       <h2>DMC Delorean</h2>
