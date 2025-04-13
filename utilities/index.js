@@ -1,133 +1,98 @@
-const invModel = require("../models/inventory-model")
-const Util = {}
+const db = require("../database/index")
+
+const utilities = {}
 
 /* ************************
- * Builds the navigation bar
+ * Constructs the nav HTML
  ************************** */
-Util.getNav = async function () {
-  try {
-    const classifications = await invModel.getClassifications()
-    let nav = '<ul>'
-    classifications.forEach(cat => {
-      nav += `<li><a href="/inv/type/${cat.classification_id}" 
-        title="View our ${cat.classification_name} lineup"
-        class="${cat.classification_name.toLowerCase()}">${cat.classification_name}</a></li>`
-    })
-    nav += '</ul>'
-    return nav
-  } catch (error) {
-    console.error("Nav building error:", error)
-    throw error
-  }
-}
-
-/* ************************
- * Builds the vehicle detail HTML
- ************************** */
-Util.buildVehicleDetail = async function(vehicle) {
-  try {
-    const price = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(vehicle.inv_price)
-
-    const miles = new Intl.NumberFormat('en-US').format(vehicle.inv_miles)
-
-    return `
-      <div class="vehicle-detail-wrapper">
-        <img src="${vehicle.inv_image}" alt="${vehicle.inv_make} ${vehicle.inv_model}">
-        <div class="vehicle-info">
-          <h2>${vehicle.inv_make} ${vehicle.inv_model} (${vehicle.inv_year})</h2>
-          <p class="price">Price: ${price}</p>
-          <p class="mileage">Mileage: ${miles}</p>
-          <p class="color">Color: ${vehicle.inv_color}</p>
-          <p class="description">${vehicle.inv_description}</p>
-        </div>
-      </div>
-    `
-  } catch (error) {
-    console.error("Vehicle detail building error:", error)
-    throw error
-  }
-}
-
-/* ************************
- * Builds the classification grid view
- ************************** */
-Util.buildClassificationGrid = async function(data) {
-  let grid = '<ul class="inv-display">'
-  data.forEach(vehicle => {
-    grid += '<li>'
-    grid += '<a href="../../inv/detail/' + vehicle.inv_id + '">'
-    grid += '<img src="' + vehicle.inv_thumbnail + '" alt="Image of ' + vehicle.inv_make + ' ' + vehicle.inv_model + '">'
-    grid += '<div class="namePrice">'
-    grid += '<hr>'
-    grid += '<h2>' + vehicle.inv_make + ' ' + vehicle.inv_model + '</h2>'
-    grid += '<span class="price">$' + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
-    grid += '</div>'
-    grid += '</a>'
-    grid += '</li>'
+utilities.getNav = async function () {
+  let data = await db.getClassifications()
+  let list = "<ul>"
+  list += '<li><a href="/" title="Home page">Home</a></li>'
+  data.forEach(row => {
+    list += "<li>"
+    list +=
+      '<a href="/inv/type/' +
+      row.classification_name +
+      '" title="See our ' +
+      row.classification_name +
+      ' inventory">' +
+      row.classification_name +
+      "</a>"
+    list += "</li>"
   })
-  grid += '</ul>'
+  list += "</ul>"
+  return list
+}
+
+/* **************************************
+* Build the classification view HTML
+* ************************************ */
+utilities.buildClassificationGrid = async function(data){
+  let grid
+  if(data.length > 0){
+    grid = '<ul id="inv-display">'
+    data.forEach(vehicle => { 
+      grid += '<li>'
+      grid +=  '<a href="/inv/detail/'+ vehicle.inv_id 
+      + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
+      + ' details"><img src="' + vehicle.inv_thumbnail 
+      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
+      +' on CSE Motors"></a>'
+      grid += '<div class="namePrice">'
+      grid += '<hr>'
+      grid += '<h2>'
+      grid += '<a href="/inv/detail/' + vehicle.inv_id +'" title="View ' 
+      + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
+      + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>'
+      grid += '</h2>'
+      grid += '<span>$' + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>'
+      grid += '</div>'
+      grid += '</li>'
+    })
+    grid += '</ul>'
+  } else { 
+    grid = '<p class="notice">Sorry, no matching vehicles could be found.</p>'
+  }
   return grid
 }
 
-Util.handleLogout = (req, res, next) => {
-  res.clearCookie("jwt")
-  res.redirect("/")
+/* **************************************
+* Build the vehicle detail view HTML
+* ************************************ */
+utilities.buildVehicleDetail = async function(vehicle){
+  let detail = '<div class="vehicle-detail">'
+  detail += '<img src="' + vehicle.inv_image + '" alt="Image of ' + vehicle.inv_make + ' ' + vehicle.inv_model + '">'
+  detail += '<div class="vehicle-info">'
+  detail += '<h2>' + vehicle.inv_make + ' ' + vehicle.inv_model + ' Details</h2>'
+  detail += '<p><strong>Price:</strong> $' + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</p>'
+  detail += '<p><strong>Description:</strong> ' + vehicle.inv_description + '</p>'
+  detail += '<p><strong>Color:</strong> ' + vehicle.inv_color + '</p>'
+  detail += '<p><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles) + '</p>'
+  detail += '<p><strong>Year:</strong> ' + vehicle.inv_year + '</p>'
+  detail += '</div>'
+  detail += '</div>'
+  return detail
 }
 
-Util.checkAccountType = (req, res, next) => {
-  const accountType = res.locals.accountData?.account_type
-  if (accountType === "Employee" || accountType === "Admin") {
+/* ****************************************
+ * Middleware For Handling Errors
+ * Wrap other function in this for 
+ * General Error Handling
+ **************************************** */
+utilities.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
+
+/* ****************************************
+* Middleware to check token validity
+**************************************** */
+utilities.checkLogin = (req, res, next) => {
+  if (req.cookies.jwt) {
+    // User is logged in
     next()
   } else {
-    req.flash("notice", "Please log in with proper account type")
+    // User is not logged in
     return res.redirect("/account/login")
   }
 }
 
-/* ****************************************
-* Middleware For Handling Errors
-* Wrap other function in this for 
-* General Error Handling
-**************************************** */
-Util.handleErrors = fn => (req, res, next) => 
-  Promise.resolve(fn(req, res, next)).catch(next)
-
-/* ****************************************
-* Check JWT Token
-**************************************** */
-Util.checkJWTToken = (req, res, next) => {
-  if (req.cookies.jwt) {
-    jwt.verify(
-      req.cookies.jwt,
-      process.env.ACCESS_TOKEN_SECRET,
-      function (err, accountData) {
-        if (err) {
-          res.clearCookie("jwt")
-          return res.redirect("/account/login")
-        }
-        res.locals.accountData = accountData
-        res.locals.loggedin = 1
-        next()
-      })
-  } else {
-    next()
-  }
-}
-
-/* ****************************************
-* Message Handler
-**************************************** */
-Util.message = (req, res, next) => {
-  const messages = []
-  if (req.session.message) {
-    messages.push(req.session.message)
-    delete req.session.message
-  }
-  res.locals.messages = messages
-  next()
-}
-
-module.exports = Util
+module.exports = utilities

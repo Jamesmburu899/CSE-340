@@ -314,4 +314,51 @@ setupDatabase()
 
 analyzeDatabase()
 
-module.exports = pool
+// Add a function to get vehicles by classification
+async function getVehiclesByClassification(classification_name) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM inventory AS i 
+      JOIN classification AS c 
+      ON i.classification_id = c.classification_id 
+      WHERE c.classification_name = $1`,
+      [classification_name]
+    )
+    return data.rows
+  } catch (error) {
+    console.error("getVehiclesByClassification error " + error)
+  }
+}
+
+// Add a function to get vehicle details by ID
+async function getVehicleById(inv_id) {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM inventory WHERE inv_id = $1`,
+      [inv_id]
+    )
+    return data.rows[0]
+  } catch (error) {
+    console.error("getVehicleById error " + error)
+  }
+}
+
+// Add a function to get all classifications for navigation
+async function getClassifications() {
+  try {
+    const data = await pool.query(
+      `SELECT * FROM classification ORDER BY classification_name`
+    )
+    return data.rows
+  } catch (error) {
+    console.error("getClassifications error " + error)
+  }
+}
+
+// Export the functions
+module.exports = {
+  pool,
+  getVehiclesByClassification,
+  getVehicleById,
+  getClassifications
+}
