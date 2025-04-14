@@ -5,7 +5,7 @@ const pool = require("../database/")
  * ************************** */
 async function getClassifications() {
   try {
-    // Make sure pool is properly imported and has a query method
+    // Check if pool is properly configured
     if (!pool || typeof pool.query !== 'function') {
       console.error("Database pool is not properly configured")
       return null

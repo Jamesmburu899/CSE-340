@@ -9,20 +9,17 @@ const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
 const session = require("express-session")
 
-// Make sure your database connection is properly set up
-const { Pool } = require('pg')
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  // Add connection timeout settings
-  connectionTimeoutMillis: 5000,
-  idleTimeoutMillis: 30000,
-  max: 20 // Maximum number of clients in the pool
-})
+// Import the pool from database/index.js
+const pool = require("./database/")
 
-// Test database connection at startup
-pool.query('SELECT NOW()')
-  .then(() => console.log('Database connected successfully'))
-  .catch(err => console.error('Database connection error:', err.message))
+// Test database connection at startup - make sure pool is properly imported
+if (pool && typeof pool.query === 'function') {
+  pool.query('SELECT NOW()')
+    .then(() => console.log('Database connected successfully'))
+    .catch(err => console.error('Database connection error:', err.message))
+} else {
+  console.error('Database pool is not properly configured')
+}
 
 const cookieParser = require("cookie-parser")
 
