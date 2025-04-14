@@ -23,17 +23,59 @@ async function getClassifications() {
 
 /* ***************************
  *  Get all inventory items and classification_name by classification_id
+ *  with optional filtering by price, year, and make
  * ************************** */
-async function getVehiclesByClassificationId(classification_id) {
+async function getVehiclesByClassificationId(classification_id, filters = {}) {
   try {
-    const data = await pool.query(
-      `SELECT * FROM public.inventory AS i 
-      JOIN public.classification AS c 
-      ON i.classification_id = c.classification_id 
-      WHERE i.classification_id = $1`,
-      [classification_id]
-    )
-    return data.rows
+    let query = `SELECT * FROM public.inventory AS i 
+                JOIN public.classification AS c 
+                ON i.classification_id = c.classification_id 
+                WHERE i.classification_id = $1`;
+    
+    const queryParams = [classification_id];
+    let paramCount = 1;
+    
+    // Add price range filter
+    if (filters.price) {
+      paramCount++;
+      if (filters.price === 'under20k') {
+        query += ` AND i.inv_price < 20000`;
+      } else if (filters.price === '20k-25k') {
+        query += ` AND i.inv_price >= 20000 AND i.inv_price <= 25000`;
+      } else if (filters.price === '25k-30k') {
+        query += ` AND i.inv_price >= 25000 AND i.inv_price <= 30000`;
+      } else if (filters.price === 'over30k') {
+        query += ` AND i.inv_price > 30000`;
+      } else if (filters.price === 'under25k') {
+        query += ` AND i.inv_price < 25000`;
+      } else if (filters.price === '35k-40k') {
+        query += ` AND i.inv_price >= 35000 AND i.inv_price <= 40000`;
+      } else if (filters.price === 'under35k') {
+        query += ` AND i.inv_price < 35000`;
+      } else if (filters.price === 'over40k') {
+        query += ` AND i.inv_price > 40000`;
+      }
+    }
+    
+    // Add year filter
+    if (filters.year) {
+      paramCount++;
+      query += ` AND i.inv_year = $${paramCount}`;
+      queryParams.push(filters.year);
+    }
+    
+    // Add make filter
+    if (filters.make) {
+      paramCount++;
+      query += ` AND i.inv_make = $${paramCount}`;
+      queryParams.push(filters.make);
+    }
+    
+    // Add sorting
+    query += ` ORDER BY i.inv_price`;
+    
+    const data = await pool.query(query, queryParams);
+    return data.rows;
   } catch (error) {
     console.error("getVehiclesByClassification error", error.message)
     return null

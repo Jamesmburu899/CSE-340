@@ -1,0 +1,70 @@
+<%- include('../includes/head') %>
+<%- include('../includes/header') %>
+<%- include('../includes/nav') %>
+
+<main class="inventory-main">
+  <div class="inventory-container">
+    <h1>🚙 CSE Motors | SUV Inventory</h1>
+    
+    <div class="inventory-intro">
+      <h2>Spacious, Safe, and Adventure-Ready</h2>
+      <p>Our SUV lineup offers the ideal mix of power, comfort, and utility. Whether you're taking the family on a road trip or simply need more room for daily life, CSE Motors has 10 top-tier SUVs ready to exceed expectations.</p>
+    </div>
+    
+    <div class="filter-container">
+      <h3>Filter Options</h3>
+      <form action="/inv/type/2" method="GET" class="filter-form">
+        <div class="filter-group">
+          <label for="price">Price Range:</label>
+          <select name="price" id="price">
+            <option value="">All Prices</option>
+            <option value="under25k">Under $25,000</option>
+            <option value="25k-30k">$25,000 - $30,000</option>
+            <option value="over30k">Over $30,000</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="year">Year:</label>
+          <select name="year" id="year">
+            <option value="">All Years</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="make">Make:</label>
+          <select name="make" id="make">
+            <option value="">All Makes</option>
+            <option value="Toyota">Toyota</option>
+            <option value="Honda">Honda</option>
+            <option value="Mazda">Mazda</option>
+            <option value="Nissan">Nissan</option>
+            <option value="Hyundai">Hyundai</option>
+            <option value="Subaru">Subaru</option>
+            <option value="Chevrolet">Chevrolet</option>
+            <option value="Ford">Ford</option>
+            <option value="Kia">Kia</option>
+            <option value="Jeep">Jeep</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="filter-button">Apply Filters</button>
+        <a href="/inv/type/2" class="reset-button">Reset Filters</a>
+      </form>
+    </div>
+    
+    <h2 class="featured-heading">🔥 Featured SUVs</h2>
+    
+    <% if (locals.grid) { %>
+      <%- grid %>
+    <% } else { %>
+      <p class="notice">No vehicles found matching your criteria.</p>
+    <% } %>
+  </div>
+</main>
+
+<%- include('../includes/footer') %>

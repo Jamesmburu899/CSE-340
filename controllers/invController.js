@@ -9,15 +9,39 @@ const invCont = {}
 invCont.buildByClassificationId = async function (req, res, next) {
   try {
     const classification_id = req.params.classificationId
-    const data = await invModel.getVehiclesByClassificationId(classification_id)
+    
+    // Get filter parameters from query string
+    const filters = {
+      price: req.query.price || null,
+      year: req.query.year || null,
+      make: req.query.make || null
+    }
+    
+    // Get data with filters applied
+    const data = await invModel.getVehiclesByClassificationId(classification_id, filters)
     
     if (!data || data.length === 0) {
       const nav = await utilities.getNav()
-      const className = "Unknown"
-      return res.render("inventory/classification", {
+      
+      // Determine which template to use based on classification_id
+      let viewTemplate = "inventory/classification"
+      let className = "Unknown"
+      
+      if (classification_id == 1) {
+        viewTemplate = "inventory/sedan"
+        className = "Sedan"
+      } else if (classification_id == 2) {
+        viewTemplate = "inventory/suv"
+        className = "SUV"
+      } else if (classification_id == 3) {
+        viewTemplate = "inventory/truck"
+        className = "Truck"
+      }
+      
+      return res.render(viewTemplate, {
         title: className + " vehicles",
         nav,
-        message: "No vehicles found for this classification",
+        message: "No vehicles found matching your criteria.",
         errors: null,
       })
     }
@@ -25,7 +49,19 @@ invCont.buildByClassificationId = async function (req, res, next) {
     const grid = await utilities.buildClassificationGrid(data)
     const className = data[0].classification_name
     const nav = await utilities.getNav()
-    res.render("inventory/classification", {
+    
+    // Determine which template to use based on classification_id
+    let viewTemplate = "inventory/classification"
+    
+    if (classification_id == 1) {
+      viewTemplate = "inventory/sedan"
+    } else if (classification_id == 2) {
+      viewTemplate = "inventory/suv"
+    } else if (classification_id == 3) {
+      viewTemplate = "inventory/truck"
+    }
+    
+    res.render(viewTemplate, {
       title: className + " vehicles",
       nav,
       grid,
