@@ -4,64 +4,11 @@
 
 <main class="inventory-main">
   <div class="inventory-container">
-    <h1>🚚 CSE Motors | Truck Inventory</h1>
-    
-    <div class="inventory-intro">
-      <h2>Rugged Strength, Refined Performance</h2>
-      <p>Whether you're hauling equipment or heading off-road, CSE Motors trucks deliver power and dependability. Our 10 hand-selected trucks are engineered to perform and built to last.</p>
-    </div>
-    
-    <div class="filter-container">
-      <h3>Filter Options</h3>
-      <form action="/inv/type/3" method="GET" class="filter-form">
-        <div class="filter-group">
-          <label for="price">Price Range:</label>
-          <select name="price" id="price">
-            <option value="">All Prices</option>
-            <option value="under35k">Under $35,000</option>
-            <option value="35k-40k">$35,000 - $40,000</option>
-            <option value="over40k">Over $40,000</option>
-          </select>
-        </div>
-        
-        <div class="filter-group">
-          <label for="year">Year:</label>
-          <select name="year" id="year">
-            <option value="">All Years</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-          </select>
-        </div>
-        
-        <div class="filter-group">
-          <label for="make">Make:</label>
-          <select name="make" id="make">
-            <option value="">All Makes</option>
-            <option value="Ford">Ford</option>
-            <option value="Toyota">Toyota</option>
-            <option value="Chevrolet">Chevrolet</option>
-            <option value="RAM">RAM</option>
-            <option value="Nissan">Nissan</option>
-            <option value="GMC">GMC</option>
-            <option value="Honda">Honda</option>
-            <option value="Jeep">Jeep</option>
-          </select>
-        </div>
-        
-        <button type="submit" class="filter-button">Apply Filters</button>
-        <a href="/inv/type/3" class="reset-button">Reset Filters</a>
-      </form>
-    </div>
-    
-    <h2 class="featured-heading">🔥 Featured Trucks</h2>
-    
-    <% if (locals.grid) { %>
-      <%- grid %>
-    <% } else { %>
-      <p class="notice">No vehicles found matching your criteria.</p>
+    <h1>Truck Inventory</h1>
+    <% if (locals.message) { %>
+      <p class="notice"><%= message %></p>
     <% } %>
+    <%- grid %>
   </div>
 </main>
 

@@ -4,8 +4,9 @@ const errorController = {}
 
 errorController.error404 = async function(req, res, next){
   const nav = await utilities.getNav()
-  res.render("errors/error404", {
+  res.status(404).render("errors/error", {
     title: "404 - Page Not Found",
+    message: "Sorry, the page you requested cannot be found.",
     nav
   })
 }
@@ -13,11 +14,16 @@ errorController.error404 = async function(req, res, next){
 errorController.error500 = async function(err, req, res, next){
   const nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  res.render("errors/error500", {
+  res.status(500).render("errors/error", {
     title: "Server Error",
-    nav,
-    message: err.message
+    message: err.message || "Internal Server Error",
+    nav
   })
+}
+
+errorController.trigger500Error = async function(req, res, next){
+  // Intentionally throw an error for testing purposes
+  throw new Error("Intentional 500 error triggered for testing")
 }
 
 module.exports = errorController

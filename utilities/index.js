@@ -22,6 +22,7 @@ utilities.getNav = async function (req, res, next) {
     list += '<li><a href="/" title="Home page">Home</a></li>'
     
     // Add direct links to Sedan, SUV, and Truck pages with correct paths
+    // Make sure the links in your getNav function are correct
     list += '<li><a href="/inv/sedan" title="View our Sedan inventory">Sedans</a></li>'
     list += '<li><a href="/inv/suv" title="View our SUV inventory">SUVs</a></li>'
     list += '<li><a href="/inv/truck" title="View our Truck inventory">Trucks</a></li>'

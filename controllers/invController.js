@@ -4,6 +4,87 @@ const utilities = require("../utilities/")
 const invCont = {}
 
 /* ***************************
+ *  Build Sedan View
+ * ************************** */
+invCont.buildSedanView = async function (req, res, next) {
+  try {
+    const data = await invModel.getVehiclesByClassificationId(1)
+    const grid = await utilities.buildClassificationGrid(data)
+    const nav = await utilities.getNav()
+    
+    res.render("inventory/sedan", {
+      title: "Sedan vehicles",
+      nav,
+      grid,
+      errors: null,
+    })
+  } catch (error) {
+    console.error("buildSedanView error:", error)
+    const nav = await utilities.getNav()
+    res.render("inventory/sedan", {
+      title: "Sedan vehicles",
+      nav,
+      message: "An error occurred retrieving the vehicles.",
+      errors: null,
+    })
+  }
+}
+
+/* ***************************
+ *  Build SUV View
+ * ************************** */
+invCont.buildSUVView = async function (req, res, next) {
+  try {
+    const data = await invModel.getVehiclesByClassificationId(2)
+    const grid = await utilities.buildClassificationGrid(data)
+    const nav = await utilities.getNav()
+    
+    res.render("inventory/suv", {
+      title: "SUV vehicles",
+      nav,
+      grid,
+      errors: null,
+    })
+  } catch (error) {
+    console.error("buildSUVView error:", error)
+    const nav = await utilities.getNav()
+    res.render("inventory/suv", {
+      title: "SUV vehicles",
+      nav,
+      message: "An error occurred retrieving the vehicles.",
+      errors: null,
+    })
+  }
+}
+
+/* ***************************
+ *  Build Truck View
+ * ************************** */
+invCont.buildTruckView = async function (req, res, next) {
+  try {
+    const data = await invModel.getVehiclesByClassificationId(3)
+    const grid = await utilities.buildClassificationGrid(data)
+    const nav = await utilities.getNav()
+    
+    res.render("inventory/truck", {
+      title: "Truck vehicles",
+      nav,
+      grid,
+      errors: null,
+    })
+  } catch (error) {
+    console.error("buildTruckView error:", error)
+    const nav = await utilities.getNav()
+    res.render("inventory/truck", {
+      title: "Truck vehicles",
+      nav,
+      message: "An error occurred retrieving the vehicles.",
+      errors: null,
+    })
+  }
+}
+
+/* ***************************
  *  Build inventory by classification view
  * ************************** */
 invCont.buildByClassificationId = async function (req, res, next) {
@@ -122,86 +203,44 @@ invCont.buildVehicleDetail = async function (req, res, next) {
 invCont.buildSedanView = async function (req, res, next) {
   try {
     const nav = await utilities.getNav()
-    const sedanData = await invModel.getVehiclesByClassificationId(1)
-    
-    if (sedanData && sedanData.length > 0) {
-      const grid = await utilities.buildClassificationGrid(sedanData)
-      res.render("inventory/sedan", {
-        title: "Sedan Vehicles",
-        nav,
-        grid,
-        errors: null,
-      })
-    } else {
-      res.render("inventory/sedan", {
-        title: "Sedan Vehicles",
-        nav,
-        message: "No sedan vehicles found.",
-        errors: null,
-      })
-    }
+    const data = await invModel.getVehiclesByClassificationId(1)
+    const grid = await utilities.buildClassificationGrid(data)
+    res.render("inventory/sedan", {
+      title: "Sedan Vehicles",
+      nav,
+      grid,
+    })
   } catch (error) {
-    console.error("buildSedanView error:", error)
     next(error)
   }
 }
 
-/* ***************************
- *  Build SUV view
- * ************************** */
 invCont.buildSUVView = async function (req, res, next) {
   try {
     const nav = await utilities.getNav()
-    const suvData = await invModel.getVehiclesByClassificationId(2)
-    
-    if (suvData && suvData.length > 0) {
-      const grid = await utilities.buildClassificationGrid(suvData)
-      res.render("inventory/suv", {
-        title: "SUV Vehicles",
-        nav,
-        grid,
-        errors: null,
-      })
-    } else {
-      res.render("inventory/suv", {
-        title: "SUV Vehicles",
-        nav,
-        message: "No SUV vehicles found.",
-        errors: null,
-      })
-    }
+    const data = await invModel.getVehiclesByClassificationId(2)
+    const grid = await utilities.buildClassificationGrid(data)
+    res.render("inventory/suv", {
+      title: "SUV Vehicles",
+      nav,
+      grid,
+    })
   } catch (error) {
-    console.error("buildSUVView error:", error)
     next(error)
   }
 }
 
-/* ***************************
- *  Build Truck view
- * ************************** */
 invCont.buildTruckView = async function (req, res, next) {
   try {
     const nav = await utilities.getNav()
-    const truckData = await invModel.getVehiclesByClassificationId(3)
-    
-    if (truckData && truckData.length > 0) {
-      const grid = await utilities.buildClassificationGrid(truckData)
-      res.render("inventory/truck", {
-        title: "Truck Vehicles",
-        nav,
-        grid,
-        errors: null,
-      })
-    } else {
-      res.render("inventory/truck", {
-        title: "Truck Vehicles",
-        nav,
-        message: "No truck vehicles found.",
-        errors: null,
-      })
-    }
+    const data = await invModel.getVehiclesByClassificationId(3)
+    const grid = await utilities.buildClassificationGrid(data)
+    res.render("inventory/truck", {
+      title: "Truck Vehicles",
+      nav,
+      grid,
+    })
   } catch (error) {
-    console.error("buildTruckView error:", error)
     next(error)
   }
 }

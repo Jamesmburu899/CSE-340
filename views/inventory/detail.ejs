@@ -2,7 +2,7 @@
 <%- include('../includes/header') %>
 <%- include('../includes/nav') %>
 
-<main>
+<main class="vehicle-detail-main">
     <% if (locals.message) { %>
         <p class="notice"><%= message %></p>
     <% } else if (locals.vehicle) { %>
@@ -11,21 +11,33 @@
             <img src="<%= vehicle.inv_image %>" alt="<%= vehicle.inv_make %> <%= vehicle.inv_model %>" class="vehicle-image">
         </div>
         <div class="vehicle-info">
-            <h1><%= vehicle.inv_make %> <%= vehicle.inv_model %> <%= vehicle.inv_year %></h1>
+            <h1 class="vehicle-title"><%= vehicle.inv_make %> <%= vehicle.inv_model %> <%= vehicle.inv_year %></h1>
+            
             <div class="vehicle-price">
-                <span>Price: <%= new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(vehicle.inv_price) %></span>
+                <span class="price-label">Price:</span>
+                <span class="price-value"><%= new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(vehicle.inv_price) %></span>
             </div>
+            
             <div class="vehicle-details">
-                <dl>
-                    <dt>Mileage:</dt>
-                    <dd><%= new Intl.NumberFormat('en-US').format(vehicle.inv_miles) %> miles</dd>
-                    
-                    <dt>Color:</dt>
-                    <dd><%= vehicle.inv_color %></dd>
-                    
-                    <dt>Description:</dt>
-                    <dd><%= vehicle.inv_description %></dd>
-                </dl>
+                <div class="detail-group">
+                    <span class="detail-label">Year:</span>
+                    <span class="detail-value"><%= vehicle.inv_year %></span>
+                </div>
+                
+                <div class="detail-group">
+                    <span class="detail-label">Mileage:</span>
+                    <span class="detail-value"><%= new Intl.NumberFormat('en-US').format(vehicle.inv_miles) %> miles</span>
+                </div>
+                
+                <div class="detail-group">
+                    <span class="detail-label">Color:</span>
+                    <span class="detail-value"><%= vehicle.inv_color %></span>
+                </div>
+                
+                <div class="detail-group description">
+                    <span class="detail-label">Description:</span>
+                    <span class="detail-value"><%= vehicle.inv_description %></span>
+                </div>
             </div>
         </div>
     </div>

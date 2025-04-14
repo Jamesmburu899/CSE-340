@@ -29,6 +29,7 @@ app.use(static)
 app.get("/", baseController.buildHome)
 
 // Inventory routes - use the imported route
+// Make sure this line is in your server.js file
 app.use("/inv", inventoryRoute)
 
 // Error routes
