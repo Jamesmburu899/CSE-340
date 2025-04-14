@@ -116,4 +116,94 @@ invCont.buildVehicleDetail = async function (req, res, next) {
   }
 }
 
+/* ***************************
+ *  Build Sedan view
+ * ************************** */
+invCont.buildSedanView = async function (req, res, next) {
+  try {
+    const nav = await utilities.getNav()
+    const sedanData = await invModel.getVehiclesByClassificationId(1)
+    
+    if (sedanData && sedanData.length > 0) {
+      const grid = await utilities.buildClassificationGrid(sedanData)
+      res.render("inventory/sedan", {
+        title: "Sedan Vehicles",
+        nav,
+        grid,
+        errors: null,
+      })
+    } else {
+      res.render("inventory/sedan", {
+        title: "Sedan Vehicles",
+        nav,
+        message: "No sedan vehicles found.",
+        errors: null,
+      })
+    }
+  } catch (error) {
+    console.error("buildSedanView error:", error)
+    next(error)
+  }
+}
+
+/* ***************************
+ *  Build SUV view
+ * ************************** */
+invCont.buildSUVView = async function (req, res, next) {
+  try {
+    const nav = await utilities.getNav()
+    const suvData = await invModel.getVehiclesByClassificationId(2)
+    
+    if (suvData && suvData.length > 0) {
+      const grid = await utilities.buildClassificationGrid(suvData)
+      res.render("inventory/suv", {
+        title: "SUV Vehicles",
+        nav,
+        grid,
+        errors: null,
+      })
+    } else {
+      res.render("inventory/suv", {
+        title: "SUV Vehicles",
+        nav,
+        message: "No SUV vehicles found.",
+        errors: null,
+      })
+    }
+  } catch (error) {
+    console.error("buildSUVView error:", error)
+    next(error)
+  }
+}
+
+/* ***************************
+ *  Build Truck view
+ * ************************** */
+invCont.buildTruckView = async function (req, res, next) {
+  try {
+    const nav = await utilities.getNav()
+    const truckData = await invModel.getVehiclesByClassificationId(3)
+    
+    if (truckData && truckData.length > 0) {
+      const grid = await utilities.buildClassificationGrid(truckData)
+      res.render("inventory/truck", {
+        title: "Truck Vehicles",
+        nav,
+        grid,
+        errors: null,
+      })
+    } else {
+      res.render("inventory/truck", {
+        title: "Truck Vehicles",
+        nav,
+        message: "No truck vehicles found.",
+        errors: null,
+      })
+    }
+  } catch (error) {
+    console.error("buildTruckView error:", error)
+    next(error)
+  }
+}
+
 module.exports = invCont

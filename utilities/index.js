@@ -8,12 +8,11 @@ const utilities = {}
 /* ************************
  * Constructs the nav HTML unordered list
  ************************** */
+// Update the getNav function to use the correct paths for Sedan, SUV, and Truck
 utilities.getNav = async function (req, res, next) {
   try {
-    // Use the model function instead of trying to query directly
     const data = await invModel.getClassifications()
     
-    // Add error handling for when data is undefined
     if (!data || !Array.isArray(data)) {
       console.log("No classification data returned from database")
       return '<ul class="nav-list"><li><a href="/">Home</a></li></ul>'
@@ -21,17 +20,28 @@ utilities.getNav = async function (req, res, next) {
     
     let list = '<ul class="nav-list">'
     list += '<li><a href="/" title="Home page">Home</a></li>'
+    
+    // Add direct links to Sedan, SUV, and Truck pages with correct paths
+    list += '<li><a href="/inv/sedan" title="View our Sedan inventory">Sedans</a></li>'
+    list += '<li><a href="/inv/suv" title="View our SUV inventory">SUVs</a></li>'
+    list += '<li><a href="/inv/truck" title="View our Truck inventory">Trucks</a></li>'
+    
+    // Add the rest of the classifications
     data.forEach(row => {
-      list += '<li>'
-      list +=
-        '<a href="/inv/type/' +
-        row.classification_id +
-        '" title="See our inventory of ' +
-        row.classification_name +
-        ' vehicles">' +
-        row.classification_name +
-        '</a>'
-      list += '</li>'
+      if (row.classification_name !== 'Sedan' && 
+          row.classification_name !== 'SUV' && 
+          row.classification_name !== 'Truck') {
+        list += '<li>'
+        list +=
+          '<a href="/inv/type/' +
+          row.classification_id +
+          '" title="See our inventory of ' +
+          row.classification_name +
+          ' vehicles">' +
+          row.classification_name +
+          '</a>'
+        list += '</li>'
+      }
     })
     list += '</ul>'
     return list

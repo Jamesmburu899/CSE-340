@@ -1,0 +1,1 @@
+// Remove any code that might be adding the unwanted search content

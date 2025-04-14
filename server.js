@@ -10,7 +10,7 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const errorController = require("./controllers/errorController")
 
-// Add this line with your other route imports
+// Import inventory routes
 const inventoryRoute = require("./routes/inventoryRoute")
 
 /* ***********************
@@ -28,7 +28,7 @@ app.use(static)
 // Index route
 app.get("/", baseController.buildHome)
 
-// Inventory routes
+// Inventory routes - use the imported route
 app.use("/inv", inventoryRoute)
 
 // Error routes
@@ -39,14 +39,20 @@ app.use(errorController.error500)
  * Express Error Handler
  *************************/
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  res.render("errors/error500", {
-    title: 'Server Error',
-    nav,
-    message: err.message,
-    error: err
-  })
+  if(err.status == 404){ 
+    res.render("errors/error404", {
+      title: '404 - Page Not Found',
+      message: err.message,
+      error: err
+    })
+  } else {
+    res.render("errors/error500", {
+      title: 'Server Error',
+      message: err.message,
+      error: err
+    })
+  }
 })
 
 /* ***********************
