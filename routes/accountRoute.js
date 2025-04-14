@@ -1,37 +1,16 @@
-const express = require("express")
-const router = express.Router()
-const accountController = require("../controllers/accountController")
+// Account routes
+const express = require('express')
+const router = new express.Router()
+const baseController = require("../controllers/baseController")
 const utilities = require("../utilities/")
-const regValidate = require("../utilities/account-validation")
 
+// Route to build login view
+router.get("/login", utilities.handleErrors(baseController.buildLogin))
 
-// Route to handle account management view
-router.get("/", utilities.handleErrors(utilities.checkLogin), utilities.handleErrors(accountController.buildAccountManagement))
+// Route to build registration view
+router.get("/register", utilities.handleErrors(baseController.buildRegister))
 
-// Routes for account update
-router.get("/update/:accountId", utilities.handleErrors(utilities.checkLogin), utilities.handleErrors(accountController.buildAccountUpdate))
-router.post("/update", 
-  utilities.handleErrors(utilities.checkLogin),
-  regValidate.updateRules(),
-  utilities.handleErrors(regValidate.checkUpdateData),
-  utilities.handleErrors(accountController.updateAccount)
-)
-
-// Route for password update
-router.post("/update-password",
-  utilities.handleErrors(utilities.checkLogin),
-  regValidate.passwordRules(),
-  utilities.handleErrors(regValidate.checkPassword),
-  utilities.handleErrors(accountController.updatePassword)
-)
-
-// Logout route
-router.get("/logout", utilities.handleErrors(utilities.handleLogout))
-
-// Account activity route
-router.get("/activity/:accountId", 
-  utilities.handleErrors(utilities.checkLogin), 
-  utilities.handleErrors(accountController.buildAccountActivity)
-)
+// Route to build account management view
+router.get("/", utilities.handleErrors(baseController.buildAccountManagement))
 
 module.exports = router

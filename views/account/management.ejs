@@ -1,20 +1,58 @@
-<%- include('../partials/head') %>
-<%- include('../partials/header') %>
-<%- include('../partials/nav') %>
+<%- include('../includes/head') %>
+<%- include('../includes/header') %>
+<%- include('../includes/nav') %>
 
-<main>
-  <% if (locals.accountData) { %>
-    <h2>Welcome <%= locals.accountData.account_firstname %></h2>
+<main class="account-main">
+  <div class="account-container">
+    <h1>Account Management</h1>
     
-    <div class="account-management">
-      <p><a href="/account/update/<%= locals.accountData.account_id %>">Update Account Information</a></p>
-
-      <% if (locals.accountData.account_type === 'Employee' || locals.accountData.account_type === 'Admin') { %>
-        <h3>Inventory Management</h3>
-        <p><a href="/inv/">Manage Inventory</a></p>
+    <% if (errors) { %>
+      <ul class="notice">
+        <% errors.forEach(error => { %>
+          <li><%= error.msg %></li>
+        <% }) %>
+      </ul>
+    <% } %>
+    
+    <div class="account-info">
+      <h2>Welcome, <%= locals.accountData?.account_firstname || "User" %></h2>
+      <p>You are logged in as <%= locals.accountData?.account_email || "user@example.com" %></p>
+    </div>
+    
+    <div class="account-actions">
+      <div class="action-card">
+        <h3>Account Settings</h3>
+        <ul>
+          <li><a href="/account/update">Update Account Information</a></li>
+          <li><a href="/account/change-password">Change Password</a></li>
+        </ul>
+      </div>
+      
+      <div class="action-card">
+        <h3>Vehicle Management</h3>
+        <ul>
+          <li><a href="/account/favorites">View Saved Vehicles</a></li>
+          <li><a href="/account/history">View Browsing History</a></li>
+        </ul>
+      </div>
+      
+      <% if (locals.accountData?.account_type === 'Admin' || locals.accountData?.account_type === 'Employee') { %>
+      <div class="action-card admin-actions">
+        <h3>Admin Functions</h3>
+        <ul>
+          <li><a href="/inv/management">Inventory Management</a></li>
+          <li><a href="/account/users">User Management</a></li>
+        </ul>
+      </div>
       <% } %>
     </div>
-  <% } %>
+    
+    <div class="logout-section">
+      <form action="/account/logout" method="post">
+        <button type="submit" class="logout-button">Logout</button>
+      </form>
+    </div>
+  </div>
 </main>
 
-<%- include('../partials/footer') %>
+<%- include('../includes/footer') %>

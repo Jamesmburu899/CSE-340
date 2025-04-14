@@ -8,11 +8,27 @@ const utilities = require("./utilities/")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
 const session = require("express-session")
-// Modify this line to directly use pg
+
+// Improve database connection with better error handling
 const { Pool } = require('pg')
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL
+  connectionString: process.env.DATABASE_URL,
+  // Add connection timeout settings
+  connectionTimeoutMillis: 5000,
+  idleTimeoutMillis: 30000,
+  max: 20 // Maximum number of clients in the pool
 })
+
+// Add connection error handling
+pool.on('error', (err) => {
+  console.error('Unexpected error on idle client', err)
+})
+
+// Test database connection at startup
+pool.query('SELECT NOW()')
+  .then(() => console.log('Database connected successfully'))
+  .catch(err => console.error('Database connection error:', err.message))
+
 const cookieParser = require("cookie-parser")
 
 /* ***********************

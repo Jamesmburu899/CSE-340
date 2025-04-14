@@ -3,26 +3,38 @@ const db = require("../database/index")
 const utilities = {}
 
 /* ************************
- * Constructs the nav HTML
+ * Constructs the nav HTML unordered list
  ************************** */
-utilities.getNav = async function () {
-  let data = await db.getClassifications()
-  let list = "<ul>"
-  list += '<li><a href="/" title="Home page">Home</a></li>'
-  data.forEach(row => {
-    list += "<li>"
-    list +=
-      '<a href="/inv/type/' +
-      row.classification_name +
-      '" title="See our ' +
-      row.classification_name +
-      ' inventory">' +
-      row.classification_name +
-      "</a>"
-    list += "</li>"
-  })
-  list += "</ul>"
-  return list
+utilities.getNav = async function (req, res, next) {
+  try {
+    const data = await utilities.getClassifications()
+    
+    // Add error handling for when data is undefined
+    if (!data || !Array.isArray(data)) {
+      console.log("No classification data returned from database")
+      return '<ul class="nav-list"><li><a href="/">Home</a></li></ul>'
+    }
+    
+    let list = '<ul class="nav-list">'
+    list += '<li><a href="/" title="Home page">Home</a></li>'
+    data.forEach(row => {
+      list += '<li>'
+      list +=
+        '<a href="/inv/type/' +
+        row.classification_id +
+        '" title="See our inventory of ' +
+        row.classification_name +
+        ' vehicles">' +
+        row.classification_name +
+        '</a>'
+      list += '</li>'
+    })
+    list += '</ul>'
+    return list
+  } catch (error) {
+    console.error("getNav error:", error.message)
+    return '<ul class="nav-list"><li><a href="/">Home</a></li></ul>'
+  }
 }
 
 /* **************************************
@@ -121,31 +133,27 @@ utilities.message = function (req, res, next) {
 }
 
 /* **************************************
-* Build the home page HTML with featured content
+* Build the home page content with promotions and search options
 * ************************************ */
-utilities.buildHomePage = async function() {
-  // Monthly campaign section
-  let homePage = '<section class="home-hero">'
-  homePage += '<div class="campaign-banner">'
-  homePage += '<h2>Monthly Campaign</h2>'
-  homePage += '<div class="fresh-picks">'
-  homePage += '<h3>Fresh Picks</h3>'
-  homePage += '<div class="promotion-container">'
-  homePage += '<div class="right-promotion">'
-  homePage += '<img src="/images/vehicles/promotion-banner.jpg" alt="Special promotion">'
-  homePage += '<h4>Right Promotion</h4>'
-  homePage += '<p>Check out our latest deals on premium vehicles</p>'
-  homePage += '</div>'
-  homePage += '</div>'
-  homePage += '</div>'
-  homePage += '</div>'
-  homePage += '</section>'
-
-  // Search by make section
-  homePage += '<section class="search-section">'
-  homePage += '<div class="search-by-make">'
-  homePage += '<h3>Search By Make</h3>'
-  homePage += '<ul class="make-list">'
+utilities.buildHomeContent = async function() {
+  let homeContent = '<div class="home-container">';
+  
+  // Right Promotion section
+  homeContent += '<section class="promotion-section">';
+  homeContent += '<h2>Right Promotion</h2>';
+  homeContent += '<p>Check out our latest deals on premium vehicles</p>';
+  homeContent += '<div class="promotion-banner">';
+  homeContent += '<img src="/images/vehicles/promotion-banner.jpg" alt="Premium vehicle deals">';
+  homeContent += '</div>';
+  homeContent += '</section>';
+  
+  // Search sections container
+  homeContent += '<div class="search-container">';
+  
+  // Search By Make
+  homeContent += '<section class="search-section make-section">';
+  homeContent += '<h2>Search By Make</h2>';
+  homeContent += '<ul class="make-list">';
   
   const makes = [
     { name: 'Toyota', count: 64502 },
@@ -172,143 +180,145 @@ utilities.buildHomePage = async function() {
     { name: 'Jaguar', count: 680 },
     { name: 'Hyundai', count: 13293 },
     { name: 'Kia', count: 21697 }
-  ]
+  ];
   
   makes.forEach(make => {
-    homePage += `<li><a href="/inv/make/${make.name}">${make.name} (${make.count.toLocaleString()})</a></li>`
-  })
+    homeContent += `<li><a href="/inv/make/${make.name.toLowerCase()}">${make.name} (${make.count.toLocaleString()})</a></li>`;
+  });
   
-  homePage += '<li><a href="/inv/makes">More Makes</a></li>'
-  homePage += '</ul>'
-  homePage += '</div>'
+  homeContent += '<li><a href="/inv/makes">More Makes</a></li>';
+  homeContent += '</ul>';
+  homeContent += '</section>';
   
-  // Search by categories
-  homePage += '<div class="search-categories">'
+  // Search By Inventory Location
+  homeContent += '<section class="search-section location-section">';
+  homeContent += '<h2>Search By Inventory Location</h2>';
+  homeContent += '<ul class="location-list">';
+  homeContent += '<li><a href="/inv/location/japan">Japan Inventory (174,260)</a></li>';
+  homeContent += '<li><a href="/inv/location/korea">Korea Inventory (65,534)</a></li>';
+  homeContent += '<li><a href="/inv/location/singapore">Singapore Inventory (1,342)</a></li>';
+  homeContent += '<li><a href="/inv/location/thailand">Thailand Inventory (6,120)</a></li>';
+  homeContent += '<li><a href="/inv/location/china">China Inventory (343)</a></li>';
+  homeContent += '<li><a href="/inv/location/uk">UK Inventory (6,002)</a></li>';
+  homeContent += '<li><a href="/inv/location/uae">UAE Inventory (3,374)</a></li>';
+  homeContent += '</ul>';
+  homeContent += '</section>';
   
-  // Search by inventory location
-  homePage += '<div class="search-category">'
-  homePage += '<h3>Search By Inventory Location</h3>'
-  homePage += '<ul>'
-  homePage += '<li>Japan Inventory (174,260)</li>'
-  homePage += '<li>Korea Inventory (65,534)</li>'
-  homePage += '<li>Singapore Inventory (1,342)</li>'
-  homePage += '<li>Thailand Inventory (6,120)</li>'
-  homePage += '<li>China Inventory (343)</li>'
-  homePage += '<li>UK Inventory (6,002)</li>'
-  homePage += '<li>UAE Inventory (3,374)</li>'
-  homePage += '</ul>'
-  homePage += '</div>'
+  // Search By Price
+  homeContent += '<section class="search-section price-section">';
+  homeContent += '<h2>Search By Price</h2>';
+  homeContent += '<ul class="price-list">';
+  homeContent += '<li><a href="/inv/price/500">Under USD 500</a></li>';
+  homeContent += '<li><a href="/inv/price/1000">Under USD 1,000</a></li>';
+  homeContent += '<li><a href="/inv/price/2000">Under USD 2,000</a></li>';
+  homeContent += '<li><a href="/inv/price/3000">Under USD 3,000</a></li>';
+  homeContent += '<li><a href="/inv/price/4000">Under USD 4,000</a></li>';
+  homeContent += '<li><a href="/inv/price/5000">Under USD 5,000</a></li>';
+  homeContent += '<li><a href="/inv/price/5001">Over USD 5,000</a></li>';
+  homeContent += '</ul>';
+  homeContent += '</section>';
   
-  // Search by price
-  homePage += '<div class="search-category">'
-  homePage += '<h3>Search By Price</h3>'
-  homePage += '<ul>'
-  homePage += '<li><a href="/inv/price/500">Under USD 500</a></li>'
-  homePage += '<li><a href="/inv/price/1000">Under USD 1,000</a></li>'
-  homePage += '<li><a href="/inv/price/2000">Under USD 2,000</a></li>'
-  homePage += '<li><a href="/inv/price/3000">Under USD 3,000</a></li>'
-  homePage += '<li><a href="/inv/price/4000">Under USD 4,000</a></li>'
-  homePage += '<li><a href="/inv/price/5000">Under USD 5,000</a></li>'
-  homePage += '<li><a href="/inv/price/5001">Over USD 5,000</a></li>'
-  homePage += '</ul>'
-  homePage += '</div>'
+  // Search By Type
+  homeContent += '<section class="search-section type-section">';
+  homeContent += '<h2>Search By Type</h2>';
+  homeContent += '<ul class="type-list">';
+  homeContent += '<li><a href="/inv/type/sedan">Sedan (45,376)</a></li>';
+  homeContent += '<li><a href="/inv/type/coupe">Coupe (7,008)</a></li>';
+  homeContent += '<li><a href="/inv/type/hatchback">Hatchback (50,364)</a></li>';
+  homeContent += '<li><a href="/inv/type/station-wagon">Station Wagon (8,005)</a></li>';
+  homeContent += '<li><a href="/inv/type/suv">SUV (65,055)</a></li>';
+  homeContent += '<li><a href="/inv/type/pickup">Pick up (6,966)</a></li>';
+  homeContent += '<li><a href="/inv/type/van">Van (14,068)</a></li>';
+  homeContent += '<li><a href="/inv/type/minivan">Mini Van (26,472)</a></li>';
+  homeContent += '<li><a href="/inv/type/wagon">Wagon (18,570)</a></li>';
+  homeContent += '<li><a href="/inv/type/convertible">Convertible (3,513)</a></li>';
+  homeContent += '<li><a href="/inv/type/bus">Bus (151)</a></li>';
+  homeContent += '<li><a href="/inv/type/truck">Truck (11,154)</a></li>';
+  homeContent += '<li><a href="/inv/type/heavy-equipment">Heavy Equipment (4)</a></li>';
+  homeContent += '</ul>';
+  homeContent += '</section>';
   
-  // Search by type
-  homePage += '<div class="search-category">'
-  homePage += '<h3>Search By Type</h3>'
-  homePage += '<ul>'
-  homePage += '<li><a href="/inv/type/Sedan">Sedan (45,376)</a></li>'
-  homePage += '<li><a href="/inv/type/Coupe">Coupe (7,008)</a></li>'
-  homePage += '<li><a href="/inv/type/Hatchback">Hatchback (50,364)</a></li>'
-  homePage += '<li><a href="/inv/type/Station Wagon">Station Wagon (8,005)</a></li>'
-  homePage += '<li><a href="/inv/type/SUV">SUV (65,055)</a></li>'
-  homePage += '<li><a href="/inv/type/Pick up">Pick up (6,966)</a></li>'
-  homePage += '<li><a href="/inv/type/Van">Van (14,068)</a></li>'
-  homePage += '<li><a href="/inv/type/Mini Van">Mini Van (26,472)</a></li>'
-  homePage += '<li><a href="/inv/type/Wagon">Wagon (18,570)</a></li>'
-  homePage += '<li><a href="/inv/type/Convertible">Convertible (3,513)</a></li>'
-  homePage += '<li><a href="/inv/type/Bus">Bus (151)</a></li>'
-  homePage += '<li><a href="/inv/type/Truck">Truck (11,154)</a></li>'
-  homePage += '<li><a href="/inv/type/Heavy Equipment">Heavy Equipment (4)</a></li>'
-  homePage += '</ul>'
-  homePage += '</div>'
+  // Search By Category
+  homeContent += '<section class="search-section category-section">';
+  homeContent += '<h2>Search By Category</h2>';
+  homeContent += '<ul class="category-list">';
+  homeContent += '<li><a href="/inv/category/left-hand-drive">Left Hand Drive (70,685)</a></li>';
+  homeContent += '<li><a href="/inv/category/manual">Manual (22,702)</a></li>';
+  homeContent += '<li><a href="/inv/category/hybrid">Hybrid (38,229)</a></li>';
+  homeContent += '<li><a href="/inv/category/electric">Electric (1,053)</a></li>';
+  homeContent += '<li><a href="/inv/category/diesel">Diesel (46,808)</a></li>';
+  homeContent += '<li><a href="/inv/category/4wd">4WD (69,695)</a></li>';
+  homeContent += '<li><a href="/inv/category/leather-seats">Leather Seats (91,773)</a></li>';
+  homeContent += '<li><a href="/inv/category/sun-roof">Sun Roof (38,787)</a></li>';
+  homeContent += '</ul>';
+  homeContent += '</section>';
   
-  // Search by category
-  homePage += '<div class="search-category">'
-  homePage += '<h3>Search By Category</h3>'
-  homePage += '<ul>'
-  homePage += '<li><a href="/inv/category/lhd">Left Hand Drive (70,685)</a></li>'
-  homePage += '<li><a href="/inv/category/manual">Manual (22,702)</a></li>'
-  homePage += '<li><a href="/inv/category/hybrid">Hybrid (38,229)</a></li>'
-  homePage += '<li><a href="/inv/category/electric">Electric (1,053)</a></li>'
-  homePage += '<li><a href="/inv/category/diesel">Diesel (46,808)</a></li>'
-  homePage += '<li><a href="/inv/category/4wd">4WD (69,695)</a></li>'
-  homePage += '<li><a href="/inv/category/leather">Leather Seats (91,773)</a></li>'
-  homePage += '<li><a href="/inv/category/sunroof">Sun Roof (38,787)</a></li>'
-  homePage += '</ul>'
-  homePage += '</div>'
-  
-  homePage += '</div>' // End search-categories
-  homePage += '</section>' // End search-section
+  homeContent += '</div>'; // End search-container
   
   // Search form
-  homePage += '<section class="search-form">'
-  homePage += '<h3>Search Cars</h3>'
-  homePage += '<form action="/inv/search" method="get">'
-  homePage += '<div class="form-group">'
-  homePage += '<label for="make">Make:</label>'
-  homePage += '<input type="text" id="make" name="make">'
-  homePage += '</div>'
-  homePage += '<div class="form-group">'
-  homePage += '<label for="model">Model:</label>'
-  homePage += '<input type="text" id="model" name="model">'
-  homePage += '</div>'
-  homePage += '<div class="form-group">'
-  homePage += '<label for="body-type">Body Type:</label>'
-  homePage += '<select id="body-type" name="body_type">'
-  homePage += '<option value="">Any</option>'
-  homePage += '<option value="Sedan">Sedan</option>'
-  homePage += '<option value="SUV">SUV</option>'
-  homePage += '<option value="Truck">Truck</option>'
-  homePage += '<option value="Coupe">Coupe</option>'
-  homePage += '</select>'
-  homePage += '</div>'
-  homePage += '<div class="form-group">'
-  homePage += '<label for="drive">RHD/LHD:</label>'
-  homePage += '<select id="drive" name="drive">'
-  homePage += '<option value="">Any</option>'
-  homePage += '<option value="rhd">Right Hand Drive</option>'
-  homePage += '<option value="lhd">Left Hand Drive</option>'
-  homePage += '</select>'
-  homePage += '</div>'
-  homePage += '<div class="form-group year-range">'
-  homePage += '<label>Year:</label>'
-  homePage += '<input type="number" name="year_from" placeholder="From">'
-  homePage += '<input type="number" name="year_to" placeholder="To">'
-  homePage += '</div>'
-  homePage += '<div class="form-group">'
-  homePage += '<label for="keywords">Stock Id or Keywords:</label>'
-  homePage += '<input type="text" id="keywords" name="keywords">'
-  homePage += '</div>'
-  homePage += '<button type="submit">Search Cars</button>'
-  homePage += '</form>'
-  homePage += '</section>'
+  homeContent += '<section class="search-form-section">';
+  homeContent += '<h2>Search Cars</h2>';
+  homeContent += '<form action="/inv/search" method="get" class="search-form">';
+  
+  homeContent += '<div class="form-group">';
+  homeContent += '<label for="make">Make:</label>';
+  homeContent += '<input type="text" id="make" name="make">';
+  homeContent += '</div>';
+  
+  homeContent += '<div class="form-group">';
+  homeContent += '<label for="model">Model:</label>';
+  homeContent += '<input type="text" id="model" name="model">';
+  homeContent += '</div>';
+  
+  homeContent += '<div class="form-group">';
+  homeContent += '<label for="body-type">Body Type:</label>';
+  homeContent += '<select id="body-type" name="body_type">';
+  homeContent += '<option value="">Any</option>';
+  homeContent += '<option value="Sedan">Sedan</option>';
+  homeContent += '<option value="SUV">SUV</option>';
+  homeContent += '<option value="Truck">Truck</option>';
+  homeContent += '<option value="Coupe">Coupe</option>';
+  homeContent += '</select>';
+  homeContent += '</div>';
+  
+  homeContent += '<div class="form-group">';
+  homeContent += '<label for="drive">RHD/LHD:</label>';
+  homeContent += '<select id="drive" name="drive">';
+  homeContent += '<option value="">Any</option>';
+  homeContent += '<option value="rhd">Right Hand Drive</option>';
+  homeContent += '<option value="lhd">Left Hand Drive</option>';
+  homeContent += '</select>';
+  homeContent += '</div>';
+  
+  homeContent += '<div class="form-group">';
+  homeContent += '<label for="year">Year:</label>';
+  homeContent += '<input type="number" id="year" name="year" placeholder="Enter year">';
+  homeContent += '</div>';
+  
+  homeContent += '<div class="form-group">';
+  homeContent += '<label for="keywords">Stock Id or Keywords:</label>';
+  homeContent += '<input type="text" id="keywords" name="keywords">';
+  homeContent += '</div>';
+  
+  homeContent += '<button type="submit" class="search-button">Search Cars</button>';
+  homeContent += '</form>';
+  homeContent += '</section>';
   
   // Important notices
-  homePage += '<section class="important-notices">'
-  homePage += '<h3>Important Notice:</h3>'
-  homePage += '<div class="notice-list">'
-  homePage += '<div class="notice">Beware of fraudulent websites pretending to be SBT. <a href="#">See Details</a></div>'
-  homePage += '<div class="notice">Beware of Scams Advising Fake Money Transfer Instructions! <a href="#">See Details</a></div>'
-  homePage += '<div class="notice">Resale notice to customers with credit transactions <a href="#">See Details</a></div>'
-  homePage += '<div class="notice">Beware of Websites, SNS, E-Mails and Invoices impersonating SBT <a href="#">See Details</a></div>'
-  homePage += '</div>'
-  homePage += '</section>'
+  homeContent += '<section class="notices-section">';
+  homeContent += '<h2>Important Notice:</h2>';
+  homeContent += '<ul class="notices-list">';
+  homeContent += '<li>Beware of fraudulent websites pretending to be SBT. <a href="/notices/fraud">See Details</a></li>';
+  homeContent += '<li>Beware of Scams Advising Fake Money Transfer Instructions! <a href="/notices/scams">See Details</a></li>';
+  homeContent += '<li>Resale notice to customers with credit transactions <a href="/notices/resale">See Details</a></li>';
+  homeContent += '<li>Beware of Websites, SNS, E-Mails and Invoices impersonating SBT <a href="/notices/impersonation">See Details</a></li>';
+  homeContent += '</ul>';
+  homeContent += '</section>';
   
   // Popular SUVs
-  homePage += '<section class="popular-suvs">'
-  homePage += '<h2>Most Popular SUVs in Kenya</h2>'
-  homePage += '<div class="suv-grid">'
+  homeContent += '<section class="popular-suvs-section">';
+  homeContent += '<h2>Most Popular SUVs in Kenya</h2>';
+  homeContent += '<div class="suv-grid">';
   
   const popularSUVs = [
     { name: 'TOYOTA LAND CRUISER PRADO', price: 16130, image: '/images/vehicles/prado.jpg' },
@@ -319,21 +329,23 @@ utilities.buildHomePage = async function() {
     { name: 'HONDA CRV', price: 5500, image: '/images/vehicles/crv.jpg' },
     { name: 'TOYOTA VANGUARD', price: 6090, image: '/images/vehicles/vanguard.jpg' },
     { name: 'TOYOTA RAV4', price: 5810, image: '/images/vehicles/rav4.jpg' }
-  ]
+  ];
   
   popularSUVs.forEach(suv => {
-    homePage += '<div class="suv-card">'
-    homePage += `<img src="${suv.image}" alt="${suv.name}">`
-    homePage += `<h3>${suv.name}</h3>`
-    homePage += `<p>USD ${suv.price}~</p>`
-    homePage += '<a href="#">See More</a>'
-    homePage += '</div>'
-  })
+    homeContent += '<div class="suv-card">';
+    homeContent += `<h3>${suv.name}</h3>`;
+    homeContent += `<img src="${suv.image}" alt="${suv.name}">`;
+    homeContent += `<p class="price">USD ${suv.price}~</p>`;
+    homeContent += '<a href="#" class="see-more-btn">See More</a>';
+    homeContent += '</div>';
+  });
   
-  homePage += '</div>'
-  homePage += '</section>'
+  homeContent += '</div>';
+  homeContent += '</section>';
   
-  return homePage
+  homeContent += '</div>'; // End home-container
+  
+  return homeContent;
 }
 
 /* ****************************************
