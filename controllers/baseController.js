@@ -10,4 +10,12 @@ baseController.buildHome = async function(req, res){
   })
 }
 
+baseController.buildCustomPage = async function(req, res) {
+  const nav = await utilities.getNav()
+  res.render("custom", {
+    title: "Custom & Personalization",
+    nav
+  })
+}
+
 module.exports = baseController
