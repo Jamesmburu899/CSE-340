@@ -10,14 +10,14 @@ ON CONFLICT (classification_id) DO NOTHING;
 INSERT INTO public.inventory (
   inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id
 )
-gVALUES
-  ('Toyota', 'Camry SE', 2023, '2.5L 4-Cylinder | Automatic | Rearview Camera, Lane Assist, Sport Trim', '/images/sedan1.jpg', '/images/sedan1.jpg', 26900, 12000, 'Silver', 1),
-  ('Honda', 'Accord Sport', 2022, '1.5L Turbo | Touchscreen, Apple CarPlay, Premium Sound', '/images/sedan2.jpg', '/images/sedan2.jpg', 25400, 18400, 'Gray', 1),
-  ('Nissan', 'Altima SV', 2021, 'AWD | ProPILOT Assist, Dual-Zone Climate Control', '/images/sedan3.jpg', '/images/sedan3.jpg', 23950, 22100, 'Charcoal Black', 1),
-  ('Hyundai', 'Elantra SEL', 2020, 'Smartstream IVT, Backup Cam, Bluetooth', '/images/sedan4.jpg', '/images/sedan4.jpg', 18700, 30500, 'Red', 1),
-  ('Mazda', '6 Touring', 2023, 'Heated Seats, Blind Spot Monitoring', '/images/sedan5.jpg', '/images/sedan5.jpg', 27200, 14300, 'Pearl White', 1),
-  ('Kia', 'K5 LXS', 2021, '1.6L Turbo | Smart Cruise Control, Wireless Android Auto', '/images/sedan6.jpg', '/images/sedan6.jpg', 22300, 21000, 'Blue', 1),
-  ('Volkswagen', 'Passat R-Line', 2020, 'Leather Interior | Heated Seats | Navigation', '/images/sedan7.jpg', '/images/sedan7.jpg', 20800, 25000, 'Black', 1);
+VALUES
+  ('Toyota', 'Camry SE', 2023, '2.5L 4-Cylinder | Automatic | Rearview Camera, Lane Assist, Sport Trim', '/images/car1.jpg', '/images/car1.jpg', 26900, 12000, 'Silver', 1),
+  ('Honda', 'Accord Sport', 2022, '1.5L Turbo | Touchscreen, Apple CarPlay, Premium Sound', '/images/car2.jpg', '/images/car2.jpg', 25400, 18400, 'Gray', 1),
+  ('Nissan', 'Altima SV', 2021, 'AWD | ProPILOT Assist, Dual-Zone Climate Control', '/images/car3.jpg', '/images/car3.jpg', 23950, 22100, 'Charcoal Black', 1),
+  ('Hyundai', 'Elantra SEL', 2020, 'Smartstream IVT, Backup Cam, Bluetooth', '/images/car4.jpg', '/images/car4.jpg', 18700, 30500, 'Red', 1),
+  ('Mazda', '6 Touring', 2023, 'Heated Seats, Blind Spot Monitoring', '/images/car5.jpg', '/images/car5.jpg', 27200, 14300, 'Pearl White', 1),
+  ('Kia', 'K5 LXS', 2021, '1.6L Turbo | Smart Cruise Control, Wireless Android Auto', '/images/car6.jpg', '/images/car6.jpg', 22300, 21000, 'Blue', 1),
+  ('Volkswagen', 'Passat R-Line', 2020, 'Leather Interior | Heated Seats | Navigation', '/images/toyota.jpg', '/images/toyota.jpg', 20800, 25000, 'Black', 1);
 
 -- Insert SUV inventory
 INSERT INTO public.inventory (
