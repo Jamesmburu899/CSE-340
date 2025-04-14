@@ -1,4 +1,7 @@
-const db = require("../database/index")
+// Update this line to import the inventory model
+const invModel = require("../models/inventory-model")
+// Remove this line if it's causing confusion
+// const db = require("../database/index")
 
 const utilities = {}
 
@@ -7,7 +10,8 @@ const utilities = {}
  ************************** */
 utilities.getNav = async function (req, res, next) {
   try {
-    const data = await utilities.getClassifications()
+    // Use the model function instead of trying to query directly
+    const data = await invModel.getClassifications()
     
     // Add error handling for when data is undefined
     if (!data || !Array.isArray(data)) {
@@ -36,6 +40,9 @@ utilities.getNav = async function (req, res, next) {
     return '<ul class="nav-list"><li><a href="/">Home</a></li></ul>'
   }
 }
+
+// Remove this function if it exists in your utilities file since we're now using the model
+// utilities.getClassifications = async function() { ... }
 
 /* **************************************
 * Build the classification view HTML
