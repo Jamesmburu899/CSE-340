@@ -8,6 +8,7 @@ const utilities = require("./utilities/")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
 const session = require("express-session")
+const flash = require("connect-flash")
 
 // Import the pool from database/index.js
 const pool = require("./database/")
@@ -35,6 +36,7 @@ app.use(session({
 }))
 
 app.use(cookieParser())
+app.use(flash())
 app.use(utilities.checkJWTToken)
 
 // Message Middleware
