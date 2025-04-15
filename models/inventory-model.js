@@ -27,10 +27,11 @@ async function getClassifications() {
  * ************************** */
 async function getVehiclesByClassificationId(classification_id, filters = {}) {
   try {
-    let query = `SELECT * FROM public.inventory AS i 
+    console.log(`Fetching vehicles for classification_id: ${classification_id}`);
+    let query = `SELECT i.*, c.classification_name FROM public.inventory AS i 
                 JOIN public.classification AS c 
                 ON i.classification_id = c.classification_id 
-                WHERE i.classification_id = $1`;
+                WHERE i.classification_id = $1::integer`;
     
     const queryParams = [classification_id];
     let paramCount = 1;
@@ -75,6 +76,10 @@ async function getVehiclesByClassificationId(classification_id, filters = {}) {
     query += ` ORDER BY i.inv_price`;
     
     const data = await pool.query(query, queryParams);
+    console.log(`Found ${data.rows.length} vehicles for classification_id: ${classification_id}`);
+    if (!data.rows.length) {
+      console.log('No vehicles found for the given classification');
+    }
     return data.rows;
   } catch (error) {
     console.error("getVehiclesByClassification error", error.message)
