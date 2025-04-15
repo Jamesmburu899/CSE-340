@@ -1,0 +1,165 @@
+/* Review Form Styles */
+.review-form-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Star Rating Input Styles */
+.rating-input {
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 0.25rem;
+    justify-content: flex-end;
+}
+
+.rating-input input {
+    display: none;
+}
+
+.rating-input label {
+    font-size: 2rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.rating-input input:checked ~ label,
+.rating-input label:hover,
+.rating-input label:hover ~ label {
+    color: #ffd700;
+}
+
+/* Review Text Input */
+#review_text {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+}
+
+#review_text:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74,144,226,0.2);
+}
+
+/* Submit Button */
+.submit-review {
+    padding: 0.75rem 1.5rem;
+    background: #003366;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.submit-review:hover {
+    background: #002244;
+}
+
+/* Reviews Display Section */
+.vehicle-reviews {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.vehicle-reviews h3 {
+    color: #333;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #003366;
+}
+
+.review-item {
+    border-bottom: 1px solid #ddd;
+    padding: 1.5rem 0;
+    margin-bottom: 1rem;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.reviewer-name {
+    font-weight: 600;
+    color: #003366;
+}
+
+.review-rating {
+    color: #ffd700;
+    letter-spacing: 2px;
+}
+
+.review-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.review-text {
+    line-height: 1.6;
+    color: #444;
+}
+
+/* Login Prompt */
+.login-prompt {
+    text-align: center;
+    margin: 2rem 0;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.login-prompt a {
+    color: #003366;
+    text-decoration: underline;
+    font-weight: 600;
+}
+
+.login-prompt a:hover {
+    color: #002244;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .review-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .rating-input label {
+        font-size: 1.75rem;
+    }
+}

@@ -1,5 +1,8 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
+const invValidate = require("../utilities/inventory-validation")
+const reviewModel = require("../models/review-model")
+const reviewValidate = require("../utilities/review-validation")
 
 const invCont = {}
 
@@ -161,39 +164,29 @@ invCont.buildByClassificationId = async function (req, res, next) {
 }
 
 /* ***************************
- *  Build vehicle detail view
- * ************************** */
+* Build vehicle detail view
+* ************************** */
 invCont.buildVehicleDetail = async function (req, res, next) {
   try {
-    const vehicle_id = req.params.vehicleId
+    const vehicle_id = req.params.inv_id
     const vehicle = await invModel.getVehicleById(vehicle_id)
-    
-    if (!vehicle) {
-      const nav = await utilities.getNav()
-      return res.render("inventory/detail", {
-        title: "Vehicle Not Found",
-        nav,
-        message: "The specified vehicle was not found.",
-        errors: null,
-      })
-    }
-    
     const nav = await utilities.getNav()
-    res.render("inventory/detail", {
-      title: vehicle.inv_make + " " + vehicle.inv_model,
+    const vehicleName = `${vehicle.inv_make} ${vehicle.inv_model}`
+
+    // Get reviews for this vehicle
+    const reviews = await reviewModel.getReviewsByVehicle(vehicle_id)
+    const reviewsHtml = reviewValidate.buildReviewHtml(reviews)
+
+    res.render("./inventory/detail", {
+      title: vehicleName,
       nav,
       vehicle,
-      errors: null,
+      reviewsHtml,
     })
   } catch (error) {
-    console.error("buildVehicleDetail error:", error)
-    const nav = await utilities.getNav()
-    res.render("inventory/detail", {
-      title: "Vehicle Detail",
-      nav,
-      message: "An error occurred retrieving the vehicle details.",
-      errors: null,
-    })
+    console.error("Error in buildVehicleDetail:", error)
+    req.flash("notice", "Sorry, we encountered an error displaying the vehicle details.")
+    res.redirect("/")
   }
 }
 
