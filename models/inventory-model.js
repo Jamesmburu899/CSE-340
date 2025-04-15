@@ -27,6 +27,10 @@ async function getClassifications() {
  * ************************** */
 async function getVehiclesByClassificationId(classification_id, filters = {}) {
   try {
+    if (!classification_id) {
+      console.error("Classification ID is required");
+      return [];
+    }
     console.log(`Fetching vehicles for classification_id: ${classification_id}`);
     let query = `SELECT i.*, c.classification_name FROM public.inventory AS i 
                 JOIN public.classification AS c 
@@ -76,14 +80,15 @@ async function getVehiclesByClassificationId(classification_id, filters = {}) {
     query += ` ORDER BY i.inv_price`;
     
     const data = await pool.query(query, queryParams);
-    console.log(`Found ${data.rows.length} vehicles for classification_id: ${classification_id}`);
-    if (!data.rows.length) {
-      console.log('No vehicles found for the given classification');
+    if (!data || !data.rows) {
+      console.error(`Database query failed for classification_id: ${classification_id}`);
+      return [];
     }
+    console.log(`Found ${data.rows.length} vehicles for classification_id: ${classification_id}`);
     return data.rows;
   } catch (error) {
     console.error("getVehiclesByClassification error", error.message)
-    return null
+    return []
   }
 }
 
