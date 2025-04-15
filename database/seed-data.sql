@@ -11,26 +11,26 @@ INSERT INTO public.inventory (
   inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail, inv_price, inv_miles, inv_color, classification_id
 )
 VALUES
-  ('Toyota', 'Camry SE', 2023, '2.5L 4-Cylinder | Automatic | Rearview Camera, Lane Assist, Sport Trim', '/images/car1.jpg', '/images/car1.jpg', 26900, 12000, 'Silver', 1),
-  ('Honda', 'Accord Sport', 2022, '1.5L Turbo | Touchscreen, Apple CarPlay, Premium Sound', '/images/car2.jpg', '/images/car2.jpg', 25400, 18400, 'Gray', 1),
-  ('Nissan', 'Altima SV', 2021, 'AWD | ProPILOT Assist, Dual-Zone Climate Control', '/images/car3.jpg', '/images/car3.jpg', 23950, 22100, 'Charcoal Black', 1),
-  ('Hyundai', 'Elantra SEL', 2020, 'Smartstream IVT, Backup Cam, Bluetooth', '/images/car4.jpg', '/images/car4.jpg', 18700, 30500, 'Red', 1),
-  ('Mazda', '6 Touring', 2023, 'Heated Seats, Blind Spot Monitoring', '/images/car5.jpg', '/images/car5.jpg', 27200, 14300, 'Pearl White', 1),
-  ('Kia', 'K5 LXS', 2021, '1.6L Turbo | Smart Cruise Control, Wireless Android Auto', '/images/car6.jpg', '/images/car6.jpg', 22300, 21000, 'Blue', 1),
-  ('Volkswagen', 'Passat R-Line', 2020, 'Leather Interior | Heated Seats | Navigation', '/images/car4.jpg', '/images/car4.jpg', 20800, 25000, 'Black', 1),
-  ('Lexus', 'ES 350', 2023, 'Luxury Package | Premium Audio | Panoramic Roof', '/images/car5.jpg', '/images/car5.jpg', 42500, 8000, 'Pearl White', 1),
-  ('Audi', 'A4 Premium Plus', 2022, 'Quattro AWD | Virtual Cockpit | B&O Sound', '/images/car6.jpg', '/images/car6.jpg', 45800, 15000, 'Manhattan Gray', 1),
-  ('BMW', '330i xDrive', 2023, 'M Sport Package | Navigation | Harman Kardon', '/images/sedan1.jpg', '/images/sedan1.jpg', 48200, 9500, 'Alpine White', 1),
-  ('Mercedes-Benz', 'C300 4MATIC', 2022, 'Premium Package | Burmester Sound | LED Lighting', '/images/sedan2.jpg', '/images/sedan2.jpg', 49900, 12000, 'Obsidian Black', 1),
-  ('Genesis', 'G70 3.3T', 2023, 'Sport Prestige | AWD | Nappa Leather', '/images/sedan3.jpg', '/images/sedan3.jpg', 51200, 7800, 'Siberian Ice', 1),
-  ('Infiniti', 'Q50 Red Sport', 2022, '400hp Twin-Turbo V6 | Sport+ Mode | Dynamic Digital Suspension', '/images/sedan4.jpg', '/images/sedan4.jpg', 56700, 11000, 'Dynamic Sunstone Red', 1),
-  ('Acura', 'TLX Type S', 2023, '355hp Turbo V6 | Super Handling AWD | ELS Studio Audio', '/images/sedan5.jpg', '/images/sedan5.jpg', 53900, 8900, 'Tiger Eye Pearl', 1),
-  ('Volvo', 'S60 R-Design', 2022, 'T6 AWD | Pilot Assist | Bowers & Wilkins', '/images/sedan6.jpg', '/images/sedan6.jpg', 47800, 14500, 'Fusion Red', 1),
-  ('Chrysler', '300S V8', 2022, 'HEMI V8 | BeatsAudio | Sport Mode', '/images/car4.jpg', '/images/car4.jpg', 41900, 16000, 'Granite Crystal', 1),
-  ('Subaru', 'Legacy GT', 2023, 'Turbo Boxer Engine | Symmetrical AWD | StarLink Safety', '/images/car5.jpg', '/images/car5.jpg', 36800, 9800, 'Magnetite Gray', 1),
-  ('Cadillac', 'CT5-V', 2023, 'Twin-Turbo V6 | Magnetic Ride Control | Super Cruise', '/images/car6.jpg', '/images/car6.jpg', 58900, 7500, 'Summit White', 1),
-  ('Jaguar', 'XF R-Dynamic', 2022, '296hp I4 | Meridian Sound | Adaptive Dynamics', '/images/sedan1.jpg', '/images/sedan1.jpg', 55800, 12500, 'British Racing Green', 1),
-  ('Alfa Romeo', 'Giulia Ti', 2023, 'Italian Design | Q4 AWD | Active Suspension', '/images/sedan2.jpg', '/images/sedan2.jpg', 49500, 8200, 'Rosso Red', 1);
+  ('Porsche', '911', 2020, 'Precision-engineered sports car with racing heritage', '/images/Porsche 911.jpg', '/images/Porsche 911.jpg', 96958, 427, 'Yellow', 1),
+  ('Lamborghini', 'Aventador', 2022, '1.5L Turbo | Touchscreen, Apple CarPlay, Premium Sound', '/images/car5.jpg', '/images/car5.jpg', 131141, 18400, 'Gray', 1),
+  ('Porsche', '911', 2021, 'AWD | ProPILOT Assist, Dual-Zone Climate Control', '/images/car6.jpg', '/images/car6.jpg', 136239, 22100, 'Charcoal Black', 1),
+  ('McLaren', '720S', 2020, 'Smartstream IVT, Backup Cam, Bluetooth', '/images/sedan1.jpg', '/images/sedan1.jpg', 136381, 30500, 'Red', 1),
+  ('Porsche', '911', 2023, 'Heated Seats, Blind Spot Monitoring', '/images/sedan2.jpg', '/images/sedan2.jpg', 189363, 14300, 'Pearl White', 1),
+  ('Lamborghini', 'Aventador', 2021, '1.6L Turbo | Smart Cruise Control, Wireless Android Auto', '/images/sedan3.jpg', '/images/sedan3.jpg', 189542, 21000, 'Blue', 1),
+  ('Aston Martin', 'Vantage', 2020, 'Leather Interior | Heated Seats | Navigation', '/images/sedan4.jpg', '/images/sedan4.jpg', 193385, 25000, 'Black', 1),
+  ('Ferrari', '458', 2023, 'Luxury Package | Premium Audio | Panoramic Roof', '/images/sedan5.jpg', '/images/sedan5.jpg', 197049, 8000, 'Pearl White', 1),
+  ('Ferrari', '458', 2022, 'Quattro AWD | Virtual Cockpit | B&O Sound', '/images/sedan6.jpg', '/images/sedan6.jpg', 204292, 15000, 'Manhattan Gray', 1),
+  ('Aston Martin', 'Vantage', 2023, 'M Sport Package | Navigation | Harman Kardon', '/images/sedan4.jpg', '/images/sedan4.jpg', 207553, 9500, 'Alpine White', 1),
+  ('McLaren', '720S', 2022, 'Premium Package | Burmester Sound | LED Lighting', '/images/sedan5.jpg', '/images/sedan5.jpg', 222158, 12000, 'Obsidian Black', 1),
+  ('Lamborghini', 'Aventador', 2023, 'Sport Prestige | AWD | Nappa Leather', '/images/sedan6.jpg', '/images/sedan6.jpg', 226226, 7800, 'Siberian Ice', 1),
+  ('Infiniti', 'Q50 Red Sport', 2022, '400hp Twin-Turbo V6 | Sport+ Mode | Dynamic Digital Suspension', '/images/car5.jpg', '/images/car5.jpg', 56700, 11000, 'Dynamic Sunstone Red', 1),
+  ('Acura', 'TLX Type S', 2023, '355hp Turbo V6 | Super Handling AWD | ELS Studio Audio', '/images/car6.jpg', '/images/car6.jpg', 53900, 8900, 'Tiger Eye Pearl', 1),
+  ('Volvo', 'S60 R-Design', 2022, 'T6 AWD | Pilot Assist | Bowers & Wilkins', '/images/sedan1.jpg', '/images/sedan1.jpg', 47800, 14500, 'Fusion Red', 1),
+  ('Chrysler', '300S V8', 2022, 'HEMI V8 | BeatsAudio | Sport Mode', '/images/sedan2.jpg', '/images/sedan2.jpg', 41900, 16000, 'Granite Crystal', 1),
+  ('Subaru', 'Legacy GT', 2023, 'Turbo Boxer Engine | Symmetrical AWD | StarLink Safety', '/images/sedan3.jpg', '/images/sedan3.jpg', 36800, 9800, 'Magnetite Gray', 1),
+  ('Cadillac', 'CT5-V', 2023, 'Twin-Turbo V6 | Magnetic Ride Control | Super Cruise', '/images/sedan4.jpg', '/images/sedan4.jpg', 58900, 7500, 'Summit White', 1),
+  ('Jaguar', 'XF R-Dynamic', 2022, '296hp I4 | Meridian Sound | Adaptive Dynamics', '/images/sedan5.jpg', '/images/sedan5.jpg', 55800, 12500, 'British Racing Green', 1),
+  ('Alfa Romeo', 'Giulia Ti', 2023, 'Italian Design | Q4 AWD | Active Suspension', '/images/sedan6.jpg', '/images/sedan6.jpg', 49500, 8200, 'Rosso Red', 1);
 
 -- Insert SUV inventory
 INSERT INTO public.inventory (
