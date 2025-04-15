@@ -92,7 +92,9 @@ utilities.buildClassificationGrid = async function(data){
 * ************************************ */
 utilities.buildVehicleDetail = async function(vehicle){
   let detail = '<div class="vehicle-detail">'
-  detail += '<img src="' + vehicle.inv_image + '" alt="Image of ' + vehicle.inv_make + ' ' + vehicle.inv_model + '">'
+  // Replace Honda Accord image with sedan3.jpg
+  const imageSource = (vehicle.inv_make === 'Honda' && vehicle.inv_model === 'Accord') ? '/images/sedan3.jpg' : vehicle.inv_image
+  detail += '<img src="' + imageSource + '" alt="Image of ' + vehicle.inv_make + ' ' + vehicle.inv_model + '">'
   detail += '<div class="vehicle-info">'
   detail += '<h2>' + vehicle.inv_make + ' ' + vehicle.inv_model + ' Details</h2>'
   detail += '<p><strong>Price:</strong> $' + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</p>'
@@ -104,13 +106,6 @@ utilities.buildVehicleDetail = async function(vehicle){
   detail += '</div>'
   return detail
 }
-
-/* ****************************************
- * Middleware For Handling Errors
- * Wrap other function in this for 
- * General Error Handling
- **************************************** */
-utilities.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 
 /* ****************************************
 * Middleware to check token validity
@@ -367,13 +362,6 @@ utilities.buildHomeContent = async function() {
 }
 
 /* ****************************************
- * Middleware For Handling Errors
- * Wrap other function in this for 
- * General Error Handling
- **************************************** */
-utilities.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
-
-/* ****************************************
 * Middleware to check token validity
 **************************************** */
 utilities.checkLogin = (req, res, next) => {
@@ -410,5 +398,23 @@ utilities.message = function (req, res, next) {
   }
   next()
 }
+
+/* ****************************************
+ * Middleware For Handling Errors
+ * Wrap other function in this for 
+ * General Error Handling
+ **************************************** */
+utilities.handleErrors = fn => {
+  return async (req, res, next) => {
+    try {
+      if (typeof fn !== 'function') {
+        throw new Error('Handler must be a function');
+      }
+      await fn(req, res, next);
+    } catch (error) {
+      next(error);
+    }
+  };
+};
 
 module.exports = utilities
